@@ -401,7 +401,7 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setX(currentPart.getX() + speedX);
-                                            if (currentPart.getX() + currentPart.getWidth() >= screenWidth) {
+                                            if (currentPart.getX() + (currentPart.getWidth() / 2) >= screenWidth) {
                                                 currentPart.setX(screenWidth - currentPart.getWidth() / 2);
                                                 collide();
                                             }
@@ -433,7 +433,7 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() + speedY);
-                                            if (currentPart.getY() + currentPart.getHeight() >= screenHeight) {
+                                            if (currentPart.getY() + currentPart.getDrawable().getIntrinsicHeight() >= screenHeight) {
                                                 currentPart.setY(screenHeight - currentPart.getHeight() / 2);
                                                 collide();
                                             }
@@ -449,8 +449,8 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() - speedY);
-                                            if (currentPart.getY() <= 0) {
-                                                currentPart.setY(0);
+                                            if (currentPart.getY() + currentPart.getDrawable().getIntrinsicHeight() <= 0) {
+                                                currentPart.setY(0 - currentPart.getDrawable().getIntrinsicHeight());
                                                 collide();
                                             }
                                         }
