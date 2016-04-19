@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -382,7 +381,7 @@ public class ClassicSnake extends AppCompatActivity {
                                             foodPoints.remove(i);
                                             playerScore++;
                                             isCollide = true;
-                                            textScore.setText("Score: " + playerScore);
+                                            textScore.setText(getString(R.string.gamescreen_score) + playerScore);
                                             setNewPoint();
                                             addTail();
                                             shake();

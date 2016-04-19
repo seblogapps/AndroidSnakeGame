@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -349,49 +348,38 @@ public class NoWallsSnake extends AppCompatActivity {
                         myHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Rect headRect = new Rect();
-                                //head.getLocalVisibleRect(headRect);
-                                head.getHitRect(headRect);
-                                Log.d(LOG_TAG, "Head Rect getHitRect: " + headRect.flattenToString());
-//                                head.getLocalVisibleRect(headRect);
-//                                Log.d(LOG_TAG, "Head Rect getLocalVisibleRect: " + headRect.flattenToString());
-                                head.getGlobalVisibleRect(headRect);
-                                Log.d(LOG_TAG, "Head Rect getGlobalVisibleRect: " + headRect.flattenToString());
-                                float left = head.getX();// - head.getWidth();
-                                float top = head.getY();// - head.getHeight();
-                                float right = head.getX() + head.getWidth();
-                                float bottom = head.getY() + head.getHeight();
-                                Log.d(LOG_TAG, "Head Rect Tim Coordinates: l:" + left + " t:" + top + " r:" + right + " b:" + bottom);
+//                                .getHitRect is not returning correct Rect of head object, so I evaluate the containing Rect manually
+//                                Rect headRect = new Rect();
+//                                head.getHitRect(headRect);
+//                                Log.d(LOG_TAG, "Head Rect getHitRect:           " + headRect.flattenToString());
+                                float leftHead = head.getX() - (head.getDrawable().getIntrinsicWidth() / 2);
+                                float topHead = head.getY() - (head.getDrawable().getIntrinsicHeight() / 2);
+                                float rightHead = head.getX() + (head.getDrawable().getIntrinsicWidth() / 2);
+                                float bottomHead = head.getY() + (head.getDrawable().getIntrinsicHeight() / 2);
 
                                 for (int i = 0; i < foodPoints.size(); i++) {
                                     if (!isCollide) {
                                         ImageView p = foodPoints.get(i);
-                                        Rect pRect = new Rect();
-                                        //p.getLocalVisibleRect(pRect);
-                                        p.getHitRect(pRect);
-                                        Log.d(LOG_TAG, "FoodPoint Rect getHitRect: (" + i + ")" + pRect.flattenToString());
-                                        float left1 = p.getX() - p.getWidth();
-                                        float top1 = p.getY() - p.getHeight();
-                                        float right1 = p.getX() + p.getWidth();
-                                        float bottom1 = p.getY() + p.getHeight();
-                                        Log.d(LOG_TAG, "FoodPoint Rect Tim Coordinates: (" + i + ")" + " l:" + left1 + " t:" + top1 + " r:" + right1 + " b:" + bottom1);
+//                                        Rect pRect = new Rect();
+//                                        p.getHitRect(pRect);
+                                        float leftPoint = p.getX() - p.getDrawable().getIntrinsicWidth();
+                                        float topPoint = p.getY() - p.getDrawable().getIntrinsicHeight();
+                                        float rightPoint = p.getX() + p.getDrawable().getIntrinsicWidth();
+                                        float bottomPoint = p.getY() + p.getDrawable().getIntrinsicHeight();
                                         // Player bounding rectangle
                                         Rect rc1 = new Rect();
-                                        rc1.set((int) left, (int) top, (int) right, (int) bottom);
+                                        rc1.set((int) leftHead, (int) topHead, (int) rightHead, (int) bottomHead);
                                         // Food bounding rectangle
                                         Rect rc2 = new Rect();
-                                        rc2.set((int) left1, (int) top1, (int) right1, (int) bottom1);
+                                        rc2.set((int) leftPoint, (int) topPoint, (int) rightPoint, (int) bottomPoint);
 
-                                        //p.getHitRect(rc2);
-                                        //if (Rect.intersects(rc1, rc2)) {
-                                        if (Rect.intersects(headRect, pRect)) {
-                                            Log.d(LOG_TAG, "Collision between head and FoodPoint(" + i + ")");
-                                            Log.d(LOG_TAG, "At coordinates: " + headRect.toString() + " - " + pRect.toString());
+                                        if (Rect.intersects(rc1, rc2)) {
+                                            //if (Rect.intersects(headRect, pRect)) {
                                             noWallsSnakeRelativeLayout.removeView(p);
                                             foodPoints.remove(i);
                                             playerScore++;
                                             isCollide = true;
-                                            textScore.setText("Score: " + playerScore);
+                                            textScore.setText(getString(R.string.gamescreen_score) + playerScore);
                                             setNewPoint();
                                             addTail();
                                             shake();
@@ -411,7 +399,8 @@ public class NoWallsSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setX(currentPart.getX() + speedX);
-                                            if (currentPart.getX() + currentPart.getWidth() >= screenWidth) {
+                                            //if (currentPart.getX() + currentPart.getWidth() >= screenWidth) {
+                                            if (currentPart.getX() + currentPart.getDrawable().getIntrinsicWidth() >= screenWidth) {
                                                 //currentPart.setX(screenWidth - currentPart.getWidth() / 2);
                                                 currentPart.setX(0);
                                             }
@@ -427,7 +416,7 @@ public class NoWallsSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setX(currentPart.getX() - speedX);
-                                            if (currentPart.getX() <= 0) {
+                                            if (currentPart.getX() + currentPart.getDrawable().getIntrinsicWidth() <= 0) {
                                                 currentPart.setX(screenWidth - currentPart.getWidth());
                                             }
                                         }
@@ -442,8 +431,8 @@ public class NoWallsSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() + speedY);
-                                            if (currentPart.getY() + currentPart.getHeight() >= screenHeight) {
-                                                currentPart.setY(0);
+                                            if (currentPart.getY() + currentPart.getDrawable().getIntrinsicHeight() >= screenHeight) {
+                                                currentPart.setY(0 - currentPart.getDrawable().getIntrinsicHeight());
                                             }
                                         }
                                     }
@@ -457,8 +446,8 @@ public class NoWallsSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() - speedY);
-                                            if (currentPart.getY() <= 0) {
-                                                currentPart.setY(screenHeight - currentPart.getHeight());
+                                            if (currentPart.getY() + currentPart.getDrawable().getIntrinsicHeight() <= 0) {
+                                                currentPart.setY(screenHeight - currentPart.getDrawable().getIntrinsicHeight());
                                             }
                                         }
                                     }
