@@ -351,40 +351,24 @@ public class ClassicSnake extends AppCompatActivity {
                         myHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Rect headRect = new Rect();
-                                //head.getLocalVisibleRect(headRect);
-                                head.getHitRect(headRect);
-                                Log.d(LOG_TAG, "Head Rect getHitRect:           " + headRect.flattenToString());
-                                head.getDrawingRect(headRect);
-                                Log.d(LOG_TAG, "Head Rect getDrawingRect:       " + headRect.flattenToString());
-                                head.getGlobalVisibleRect(headRect);
-                                Log.d(LOG_TAG, "Head Rect getGlobalVisibleRect: " + headRect.flattenToString());
-//                                float left = head.getX() - head.getWidth();
-//                                float top = head.getY() - head.getHeight();
-//                                float right = head.getX() + head.getWidth();
-//                                float bottom = head.getY() + head.getHeight();
+//                                .getHitRect is not returning correct Rect of head object, so I evaluate the containing Rect manually
+//                                Rect headRect = new Rect();
+//                                head.getHitRect(headRect);
+//                                Log.d(LOG_TAG, "Head Rect getHitRect:           " + headRect.flattenToString());
                                 float leftHead = head.getX() - (head.getDrawable().getIntrinsicWidth() / 2);
                                 float topHead = head.getY() - (head.getDrawable().getIntrinsicHeight() / 2);
                                 float rightHead = head.getX() + (head.getDrawable().getIntrinsicWidth() / 2);
                                 float bottomHead = head.getY() + (head.getDrawable().getIntrinsicHeight() / 2);
-                                Log.d(LOG_TAG, "Head Intrinsic Coordinates: l:" + leftHead + " t:" + topHead + " r:" + rightHead + " b:" + bottomHead);
 
                                 for (int i = 0; i < foodPoints.size(); i++) {
                                     if (!isCollide) {
                                         ImageView p = foodPoints.get(i);
-                                        Rect pRect = new Rect();
-                                        //p.getLocalVisibleRect(pRect);
-                                        p.getHitRect(pRect);
-                                        Log.d(LOG_TAG, "FoodPoint Rect getHitRect: (" + i + ")" + pRect.flattenToString());
-//                                        float left1 = p.getX() - p.getWidth();
-//                                        float top1 = p.getY() - p.getHeight();
-//                                        float right1 = p.getX() + p.getWidth();
-//                                        float bottom1 = p.getY() + p.getHeight();
+//                                        Rect pRect = new Rect();
+//                                        p.getHitRect(pRect);
                                         float leftPoint = p.getX() - p.getDrawable().getIntrinsicWidth();
                                         float topPoint = p.getY() - p.getDrawable().getIntrinsicHeight();
                                         float rightPoint = p.getX() + p.getDrawable().getIntrinsicWidth();
                                         float bottomPoint = p.getY() + p.getDrawable().getIntrinsicHeight();
-                                        Log.d(LOG_TAG, "FoodPoint Coordinates: (" + i + ")" + " l:" + leftPoint + " t:" + topPoint + " r:" + rightPoint + " b:" + bottomPoint);
                                         // Player bounding rectangle
                                         Rect rc1 = new Rect();
                                         rc1.set((int) leftHead, (int) topHead, (int) rightHead, (int) bottomHead);
@@ -392,11 +376,8 @@ public class ClassicSnake extends AppCompatActivity {
                                         Rect rc2 = new Rect();
                                         rc2.set((int) leftPoint, (int) topPoint, (int) rightPoint, (int) bottomPoint);
 
-                                        //p.getHitRect(rc2);
                                         if (Rect.intersects(rc1, rc2)) {
                                             //if (Rect.intersects(headRect, pRect)) {
-                                            Log.d(LOG_TAG, "Collision between head and FoodPoint(" + i + ")");
-                                            Log.d(LOG_TAG, "At coordinates: " + headRect.toString() + " - " + pRect.toString());
                                             classicSnakeRelativeLayout.removeView(p);
                                             foodPoints.remove(i);
                                             playerScore++;
