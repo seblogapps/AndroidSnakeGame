@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/settings_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_orange_light"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    tools:context="com.example.stognacci.snakegame.Settings">
+
+    <TextView
+        android:id="@+id/settings_title_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/settings_title_middle"
+        android:layout_marginRight="14dp"
+        android:layout_toLeftOf="@id/settings_title_middle"
+        android:text="@string/title_settings_left"
+        android:textSize="25sp"/>
+
+    <TextView
+        android:id="@+id/settings_title_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp"
+        android:text="@string/title_settings_middle"
+        android:textSize="25sp"/>
+
+    <TextView
+        android:id="@+id/settings_title_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/settings_title_middle"
+        android:layout_alignBottom="@id/settings_title_middle"
+        android:layout_marginLeft="18dp"
+        android:layout_toRightOf="@id/settings_title_middle"
+        android:text="@string/title_settings_right"
+        android:textSize="25sp"/>
+
+    <ImageView
+        android:id="@+id/settings_swipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="-50dp"
+        android:layout_toLeftOf="@id/settings_title_middle"
+        android:background="@mipmap/menu_options"/>
+
+    <ImageView
+        android:id="@+id/settings_music"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/settings_swipe"
+        android:layout_marginLeft="-50dp"
+        android:layout_toRightOf="@+id/settings_title_middle"
+        android:background="@mipmap/menu_options"/>
+
+    <ImageView
+        android:id="@+id/settings_dummy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/settings_swipe"
+        android:layout_below="@+id/settings_swipe"
+        android:layout_marginTop="16dp"
+        android:src="@mipmap/menu_options"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/goto_main_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/settings_music"
+        android:layout_alignTop="@+id/settings_dummy"
+        android:src="@mipmap/menu_options"/>
+
+
+</RelativeLayout>

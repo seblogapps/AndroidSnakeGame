@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">SnakeGame</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_snake_left">|</string>
+    <string name="title_snake_middle"> SNAKE </string>
+    <string name="title_snake_right">|</string>
+    <string name="title_activity_classic_snake">Classic_Snake</string>
+    <string name="title_activity_no_walls_snake">No_Walls_Snake</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_no_walls_score">No_Walls_Score</string>
+    <string name="title_activity_classic_score">Classic_Score</string>
+    <string name="title_activity_bomb_snake">Bomb_Snake</string>
+    <string name="title_activity_bomb_score">Bomb_Score</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_gameover_left">|</string>
+    <string name="title_gameover_middle"> GAME OVER </string>
+    <string name="title_gameover_right">|</string>
+
+    <string name="title_settings_left">|</string>
+    <string name="title_settings_middle"> SETTINGS </string>
+    <string name="title_settings_right">|</string>
+
+</resources>
