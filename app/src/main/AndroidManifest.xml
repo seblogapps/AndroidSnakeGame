@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.example.stognacci.snakegame"
+<manifest package="com.seblogapps.stognacci.snakegame"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET">
@@ -13,7 +13,7 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainMenu"
+            android:name="com.seblogapps.stognacci.snakegame.MainMenu"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -24,43 +24,43 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ClassicSnake"
+            android:name="com.seblogapps.stognacci.snakegame.ClassicSnake"
             android:label="@string/title_activity_classic_snake"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".NoWallsSnake"
+            android:name="com.seblogapps.stognacci.snakegame.NoWallsSnake"
             android:label="@string/title_activity_no_walls_snake"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".BombSnake"
+            android:name="com.seblogapps.stognacci.snakegame.BombSnake"
             android:label="@string/title_activity_bomb_snake"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".Settings"
+            android:name="com.seblogapps.stognacci.snakegame.Settings"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".ClassicScore"
+            android:name="com.seblogapps.stognacci.snakegame.ClassicScore"
             android:label="@string/title_activity_classic_score"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".NoWallsScore"
+            android:name="com.seblogapps.stognacci.snakegame.NoWallsScore"
             android:label="@string/title_activity_no_walls_score"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".BombScore"
+            android:name="com.seblogapps.stognacci.snakegame.BombScore"
             android:label="@string/title_activity_bomb_score"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

@@ -1,4 +1,4 @@
-package com.example.stognacci.snakegame;
+package com.seblogapps.stognacci.snakegame;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class BombScore extends AppCompatActivity {
+public class ClassicScore extends AppCompatActivity {
+
 
     private TextView scoreTextView;
     private TextView highScoreTextView;
@@ -32,7 +33,8 @@ public class BombScore extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_bomb_score);
+        setContentView(R.layout.content_classic_score);
+
         preferences = getApplicationContext().getSharedPreferences(GameSettings.SHAREDPREFS_NAME, Context.MODE_PRIVATE);
 
         View decorView = getWindow().getDecorView();
@@ -51,7 +53,7 @@ public class BombScore extends AppCompatActivity {
 
     private void initScore() {
         scoreTextView = (TextView) findViewById(R.id.player_score);
-        animation = AnimationUtils.loadAnimation(BombScore.this, R.anim.anim_for_classic_button);
+        animation = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.anim_for_classic_button);
         animation.setDuration(GameSettings.ANIMATION_OPEN_BUTTON_DURATION);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -101,13 +103,13 @@ public class BombScore extends AppCompatActivity {
 
     private void setHighScore() {
 
-        int highScore = preferences.getInt(GameSettings.SHAREDPREFS_HIGHSCORE_BOMB, 0);
+        int highScore = preferences.getInt(GameSettings.SHAREDPREFS_HIGHSCORE_CLASSIC, 0);
         int lastScore = preferences.getInt(GameSettings.SHAREDPREFS_LASTSCORE, 0);
 
         if (lastScore > highScore) {
             highScore = lastScore;
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt(GameSettings.SHAREDPREFS_HIGHSCORE_BOMB, lastScore);
+            editor.putInt(GameSettings.SHAREDPREFS_HIGHSCORE_CLASSIC, lastScore);
             editor.apply();
         }
         highScoreTextView.setText("High: " + String.valueOf(highScore));
@@ -133,7 +135,7 @@ public class BombScore extends AppCompatActivity {
                 playAgainImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intentClassic = new Intent(BombScore.this, BombSnake.class);
+                        Intent intentClassic = new Intent(ClassicScore.this, ClassicSnake.class);
                         intentClassic.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         intentClassic.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentClassic);
@@ -178,25 +180,25 @@ public class BombScore extends AppCompatActivity {
                         mainMenuImageView.setImageResource(R.drawable.menu_options);
 
                         //Reverse the animation
-                        Animation animationTopLeft = AnimationUtils.loadAnimation(BombScore.this, R.anim.reverse_for_classic_button);
+                        Animation animationTopLeft = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.reverse_for_classic_button);
                         animationTopLeft.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
 
-                        Animation animationTopRight = AnimationUtils.loadAnimation(BombScore.this, R.anim.reverse_for_no_button);
+                        Animation animationTopRight = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.reverse_for_no_button);
                         animationTopRight.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
 
-                        Animation animationBottomLeft = AnimationUtils.loadAnimation(BombScore.this, R.anim.reverse_for_settings_button);
+                        Animation animationBottomLeft = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.reverse_for_settings_button);
                         animationBottomLeft.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
 
-                        Animation animationBottomRight = AnimationUtils.loadAnimation(BombScore.this, R.anim.reverse_for_bomb_button );
+                        Animation animationBottomRight = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.reverse_for_bomb_button );
                         animationBottomRight.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);
 
-                        Animation animationLeft = AnimationUtils.loadAnimation(BombScore.this, R.anim.anim_for_title_left);
+                        Animation animationLeft = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.anim_for_title_left);
                         animationLeft.setDuration(GameSettings.ANIMATION_HIDE_TITLE_DURATION);
 
-                        Animation animationMiddle = AnimationUtils.loadAnimation(BombScore.this, R.anim.anim_for_title_middle);
+                        Animation animationMiddle = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.anim_for_title_middle);
                         animationMiddle.setDuration(GameSettings.ANIMATION_HIDE_TITLE_DURATION);
 
-                        Animation animationRight = AnimationUtils.loadAnimation(BombScore.this, R.anim.anim_for_title_right);
+                        Animation animationRight = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.anim_for_title_right);
                         animationRight.setDuration(GameSettings.ANIMATION_HIDE_TITLE_DURATION);
 
                         scoreTextView.startAnimation(animationTopLeft);
@@ -211,7 +213,7 @@ public class BombScore extends AppCompatActivity {
                         myHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent intentMainMenu = new Intent(BombScore.this, MainMenu.class);
+                                Intent intentMainMenu = new Intent(ClassicScore.this, MainMenu.class);
                                 intentMainMenu.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                 intentMainMenu.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intentMainMenu);
@@ -236,15 +238,15 @@ public class BombScore extends AppCompatActivity {
         gameOverTitleMiddle = (TextView) findViewById(R.id.gameover_middle);
         gameOverTitleRight = (TextView) findViewById(R.id.gameover_right);
 
-        Animation animationLeft = AnimationUtils.loadAnimation(BombScore.this, R.anim.back_anim_for_title_left);
+        Animation animationLeft = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.back_anim_for_title_left);
         animationLeft.setDuration(GameSettings.ANIMATION_SHOW_TITLE_DURATION);
         gameOverTitleLeft.startAnimation(animationLeft);
 
-        Animation animationMiddle = AnimationUtils.loadAnimation(BombScore.this, R.anim.back_anim_for_title_middle);
+        Animation animationMiddle = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.back_anim_for_title_middle);
         animationMiddle.setDuration(GameSettings.ANIMATION_SHOW_TITLE_DURATION);
         gameOverTitleMiddle.startAnimation(animationMiddle);
 
-        Animation animationRight = AnimationUtils.loadAnimation(BombScore.this, R.anim.back_anim_for_title_right);
+        Animation animationRight = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.back_anim_for_title_right);
         animationRight.setDuration(GameSettings.ANIMATION_SHOW_TITLE_DURATION);
         gameOverTitleRight.startAnimation(animationRight);
     }

@@ -1,4 +1,4 @@
-package com.example.stognacci.snakegame;
+package com.seblogapps.stognacci.snakegame;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -340,6 +341,17 @@ public class ClassicSnake extends AppCompatActivity {
         }
     }
 
+    private Rect getDrawableRect(ImageView imageView) {
+        float left = imageView.getX();// - (imageView.getDrawable().getIntrinsicWidth() / 2);
+        float top = imageView.getY() + (imageView.getDrawable().getIntrinsicHeight() / 2);
+        float right = imageView.getX() + (imageView.getDrawable().getIntrinsicWidth() / 1);
+        float bottom = imageView.getY() + (imageView.getDrawable().getIntrinsicHeight() / 2);
+        Rect drawableRect = new Rect();
+        drawableRect.set((int) left, (int) top, (int) right, (int) bottom);
+        Log.d(LOG_TAG, "getDrawableRect:           " + drawableRect.flattenToString());
+        return drawableRect;
+    }
+
     private void update() {
         new Thread(new Runnable() {
             @Override
@@ -369,13 +381,14 @@ public class ClassicSnake extends AppCompatActivity {
                                         float rightPoint = p.getX() + p.getDrawable().getIntrinsicWidth();
                                         float bottomPoint = p.getY() + p.getDrawable().getIntrinsicHeight();
                                         // Player bounding rectangle
-                                        Rect rc1 = new Rect();
-                                        rc1.set((int) leftHead, (int) topHead, (int) rightHead, (int) bottomHead);
+                                        //Rect rc1 = new Rect();
+                                        Rect headRect = getDrawableRect(head);
+                                        //rc1.set((int) leftHead, (int) topHead, (int) rightHead, (int) bottomHead);
                                         // Food bounding rectangle
                                         Rect rc2 = new Rect();
                                         rc2.set((int) leftPoint, (int) topPoint, (int) rightPoint, (int) bottomPoint);
 
-                                        if (Rect.intersects(rc1, rc2)) {
+                                        if (Rect.intersects(headRect, rc2)) {
                                             //if (Rect.intersects(headRect, pRect)) {
                                             classicSnakeRelativeLayout.removeView(p);
                                             foodPoints.remove(i);
@@ -401,8 +414,8 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setX(currentPart.getX() + speedX);
-                                            if (currentPart.getX() + (currentPart.getWidth() / 2) >= screenWidth) {
-                                                currentPart.setX(screenWidth - currentPart.getWidth() / 2);
+                                            if (currentPart.getX() + (currentPart.getDrawable().getIntrinsicWidth()) >= screenWidth) {
+                                                currentPart.setX(screenWidth - currentPart.getDrawable().getIntrinsicWidth());
                                                 collide();
                                             }
                                         }
@@ -434,7 +447,7 @@ public class ClassicSnake extends AppCompatActivity {
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() + speedY);
                                             if (currentPart.getY() + currentPart.getDrawable().getIntrinsicHeight() >= screenHeight) {
-                                                currentPart.setY(screenHeight - currentPart.getHeight() / 2);
+                                                currentPart.setY(screenHeight - currentPart.getDrawable().getIntrinsicHeight());
                                                 collide();
                                             }
                                         }

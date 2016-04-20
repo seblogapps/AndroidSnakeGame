@@ -10,7 +10,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="com.example.stognacci.snakegame.BombSnake">
+    tools:context="com.seblogapps.stognacci.snakegame.BombSnake">
 
     <TextView
         android:id="@+id/score"

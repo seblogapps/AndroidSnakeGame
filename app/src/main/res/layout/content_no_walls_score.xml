@@ -11,7 +11,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context="com.example.stognacci.snakegame.NoWallsScore">
+    tools:context="com.seblogapps.stognacci.snakegame.NoWallsScore">
 
     <TextView
         android:id="@+id/gameover_left"

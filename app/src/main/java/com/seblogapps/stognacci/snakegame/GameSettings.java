@@ -1,4 +1,4 @@
-package com.example.stognacci.snakegame;
+package com.seblogapps.stognacci.snakegame;
 
 /**
  * Created by stognacci on 11/04/2016.

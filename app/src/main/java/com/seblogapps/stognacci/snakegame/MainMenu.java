@@ -1,4 +1,4 @@
-package com.example.stognacci.snakegame;
+package com.seblogapps.stognacci.snakegame;
 
 import android.content.Intent;
 import android.os.Bundle;
