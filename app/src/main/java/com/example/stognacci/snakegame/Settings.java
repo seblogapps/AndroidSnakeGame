@@ -90,16 +90,16 @@ public class Settings extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 isSwipeOn = preferences.getBoolean(GameSettings.SHAREDPREFS_CONTROLS, true);
-                swipeButtonImageView.setImageResource(isSwipeOn ? R.mipmap.swipe : R.mipmap.buttons);
+                swipeButtonImageView.setImageResource(isSwipeOn ? R.drawable.swipe : R.drawable.buttons);
                 swipeButtonImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         swipeButtonImageView.setImageDrawable(null);
                         if (isSwipeOn) {
-                            swipeButtonImageView.setImageResource(R.mipmap.buttons);
+                            swipeButtonImageView.setImageResource(R.drawable.buttons);
                             isSwipeOn = false;
                         } else {
-                            swipeButtonImageView.setImageResource(R.mipmap.swipe);
+                            swipeButtonImageView.setImageResource(R.drawable.swipe);
                             isSwipeOn = true;
                         }
                         SharedPreferences.Editor editor = preferences.edit();
@@ -132,17 +132,17 @@ public class Settings extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 isMusicOn = preferences.getBoolean(GameSettings.SHAREDPREFS_MUSIC, true);
-                musicButtonImageView.setImageResource(isMusicOn ? (R.mipmap.music_on) : (R.mipmap.music_off));
+                musicButtonImageView.setImageResource(isMusicOn ? (R.drawable.music_on) : (R.drawable.music_off));
                 musicButtonImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         musicButtonImageView.setImageDrawable(null);
                         if (isMusicOn) {
                             isMusicOn = false;
-                            musicButtonImageView.setImageResource(R.mipmap.music_off);
+                            musicButtonImageView.setImageResource(R.drawable.music_off);
                         } else {
                             isMusicOn = true;
-                            musicButtonImageView.setImageResource(R.mipmap.music_on);
+                            musicButtonImageView.setImageResource(R.drawable.music_on);
                         }
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putBoolean(GameSettings.SHAREDPREFS_MUSIC, isMusicOn);
@@ -173,13 +173,13 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                mainMenuImageView.setImageResource(R.mipmap.menu);
+                mainMenuImageView.setImageResource(R.drawable.menu);
                 mainMenuImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        swipeButtonImageView.setImageResource(R.mipmap.menu_options);
-                        musicButtonImageView.setImageResource(R.mipmap.menu_options);
-                        mainMenuImageView.setImageResource(R.mipmap.menu_options);
+                        swipeButtonImageView.setImageResource(R.drawable.menu_options);
+                        musicButtonImageView.setImageResource(R.drawable.menu_options);
+                        mainMenuImageView.setImageResource(R.drawable.menu_options);
 
                         // Reverse the animation
                         Animation animationTopLeft = AnimationUtils.loadAnimation(Settings.this, R.anim.reverse_for_classic_button);

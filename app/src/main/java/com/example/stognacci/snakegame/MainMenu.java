@@ -77,7 +77,7 @@ public class MainMenu extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                classicBtn.setImageResource(R.mipmap.classic);
+                classicBtn.setImageResource(R.drawable.classic);
                 classicBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -108,7 +108,7 @@ public class MainMenu extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                noWallsBtn.setImageResource(R.mipmap.no_walls);
+                noWallsBtn.setImageResource(R.drawable.no_walls);
                 noWallsBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -139,7 +139,7 @@ public class MainMenu extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                bombBtn.setImageResource(R.mipmap.bombsnake);
+                bombBtn.setImageResource(R.drawable.bombsnake);
                 bombBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -189,16 +189,16 @@ public class MainMenu extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                settingsBtn.setImageResource(R.mipmap.settings);
+                settingsBtn.setImageResource(R.drawable.settings);
                 settingsBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                        settingsBtn.setImageResource(R.mipmap.menu_options);
-                        classicBtn.setImageResource(R.mipmap.menu_options);
-                        noWallsBtn.setImageResource(R.mipmap.menu_options);
-                        bombBtn.setImageResource(R.mipmap.menu_options);
+                        settingsBtn.setImageResource(R.drawable.menu_options);
+                        classicBtn.setImageResource(R.drawable.menu_options);
+                        noWallsBtn.setImageResource(R.drawable.menu_options);
+                        bombBtn.setImageResource(R.drawable.menu_options);
 
                         Animation animationCloseClassic = AnimationUtils.loadAnimation(MainMenu.this, R.anim.reverse_for_classic_button);
                         animationCloseClassic.setDuration(GameSettings.ANIMATION_CLOSE_BUTTON_DURATION);

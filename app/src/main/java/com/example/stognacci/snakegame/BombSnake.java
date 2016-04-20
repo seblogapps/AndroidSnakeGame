@@ -93,7 +93,7 @@ public class BombSnake extends AppCompatActivity {
         preferences = getApplicationContext().getSharedPreferences(GameSettings.SHAREDPREFS_NAME, Context.MODE_PRIVATE);
         musicOnOff();
         bombSnakeRelativeLayout = (RelativeLayout) findViewById(R.id.bomb_snake_layout);
-        bombSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake);
+        bombSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
         bombSnakeRelativeLayout.setPaddingRelative(GameSettings.LAYOUT_PADDING,
                 GameSettings.LAYOUT_PADDING, GameSettings.LAYOUT_PADDING, GameSettings.LAYOUT_PADDING);
 
@@ -248,14 +248,14 @@ public class BombSnake extends AppCompatActivity {
     private void shake() {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         shake.setDuration(GameSettings.SHAKE_DURATION);
-        bombSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake);
+        bombSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
         bombSnakeRelativeLayout.startAnimation(shake);
     }
 
     private void fadeAnimation() {
         if (playerScore % GameSettings.POINTS_ANIMATION == 0) {
             Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-            bombSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake_change);
+            bombSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake_change);
             bombSnakeRelativeLayout.startAnimation(fadeIn);
             fadeIn.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -265,7 +265,7 @@ public class BombSnake extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     Animation fadeOut = AnimationUtils.loadAnimation(BombSnake.this, R.anim.fade_out);
-                    bombSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake);
+                    bombSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
                     bombSnakeRelativeLayout.startAnimation(fadeOut);
                 }
 
@@ -302,7 +302,7 @@ public class BombSnake extends AppCompatActivity {
 
     private void addTail() {
         ImageView tailImageView = new ImageView(BombSnake.this);
-        tailImageView.setImageResource(R.mipmap.head);
+        tailImageView.setImageResource(R.drawable.head);
         LinearLayout.LayoutParams layoutParams = new
                 LinearLayout.LayoutParams((screenWidth * 20) / 450, (screenHeight * 30) / 450);
         tailImageView.setLayoutParams(layoutParams);
@@ -315,7 +315,7 @@ public class BombSnake extends AppCompatActivity {
         ImageView newFoodPoint = new ImageView(BombSnake.this);
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
         float y = random.nextFloat() * (screenHeight - newFoodPoint.getHeight());
-        newFoodPoint.setImageResource(R.mipmap.food);
+        newFoodPoint.setImageResource(R.drawable.food);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 (screenWidth * 20 / 450), (screenHeight * 30 / 450));
         newFoodPoint.setLayoutParams(layoutParams);
@@ -332,7 +332,7 @@ public class BombSnake extends AppCompatActivity {
             ImageView foodItem = new ImageView(BombSnake.this);
             float x = random.nextFloat() * (screenWidth - foodItem.getWidth());
             float y = random.nextFloat() * (screenHeight - foodItem.getHeight());
-            foodItem.setImageResource(R.mipmap.food);
+            foodItem.setImageResource(R.drawable.food);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     (screenWidth * 20 / 450), (screenHeight * 30 / 450));
             foodItem.setLayoutParams(layoutParams);
@@ -349,7 +349,7 @@ public class BombSnake extends AppCompatActivity {
             ImageView bomb = new ImageView(this);
             float x = (random.nextFloat() * screenWidth - bomb.getWidth());
             float y = (random.nextFloat() * screenHeight - bomb.getHeight());
-            bomb.setImageResource(R.mipmap.food_poison);
+            bomb.setImageResource(R.drawable.food_poison);
 
             RelativeLayout.LayoutParams layoutParams = new
                     RelativeLayout.LayoutParams((screenWidth * 20 / 450),
@@ -570,7 +570,7 @@ public class BombSnake extends AppCompatActivity {
                     ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
             head = new ImageView(this);
             head.setLayoutParams(layoutParams);
-            head.setImageResource(R.mipmap.head);
+            head.setImageResource(R.drawable.head);
             head.setX((screenWidth / 2) - head.getWidth());
             head.setY((screenHeight / 2) - head.getHeight());
             bombSnakeRelativeLayout.addView(head);

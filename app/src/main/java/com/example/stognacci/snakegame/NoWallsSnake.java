@@ -88,7 +88,7 @@ public class NoWallsSnake extends AppCompatActivity {
         preferences = getApplicationContext().getSharedPreferences(GameSettings.SHAREDPREFS_NAME, Context.MODE_PRIVATE);
         musicOnOff();
         noWallsSnakeRelativeLayout = (RelativeLayout) findViewById(R.id.nowalls_snake_layout);
-        noWallsSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake);
+        noWallsSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
         noWallsSnakeRelativeLayout.setPaddingRelative(GameSettings.LAYOUT_PADDING,
                 GameSettings.LAYOUT_PADDING, GameSettings.LAYOUT_PADDING, GameSettings.LAYOUT_PADDING);
 
@@ -243,14 +243,14 @@ public class NoWallsSnake extends AppCompatActivity {
     private void shake() {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         shake.setDuration(GameSettings.SHAKE_DURATION);
-        noWallsSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake);
+        noWallsSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
         noWallsSnakeRelativeLayout.startAnimation(shake);
     }
 
     private void fadeAnimation() {
         if (playerScore % GameSettings.POINTS_ANIMATION == 0) {
             Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-            noWallsSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake_change);
+            noWallsSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake_change);
             noWallsSnakeRelativeLayout.startAnimation(fadeIn);
             fadeIn.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -260,7 +260,7 @@ public class NoWallsSnake extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     Animation fadeOut = AnimationUtils.loadAnimation(NoWallsSnake.this, R.anim.fade_out);
-                    noWallsSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake);
+                    noWallsSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
                     noWallsSnakeRelativeLayout.startAnimation(fadeOut);
                 }
 
@@ -297,7 +297,7 @@ public class NoWallsSnake extends AppCompatActivity {
 
     private void addTail() {
         ImageView tailImageView = new ImageView(NoWallsSnake.this);
-        tailImageView.setImageResource(R.mipmap.head);
+        tailImageView.setImageResource(R.drawable.head);
         LinearLayout.LayoutParams layoutParams = new
                 LinearLayout.LayoutParams((screenWidth * 20) / 450, (screenHeight * 30) / 450);
         tailImageView.setLayoutParams(layoutParams);
@@ -310,7 +310,7 @@ public class NoWallsSnake extends AppCompatActivity {
         ImageView newFoodPoint = new ImageView(NoWallsSnake.this);
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
         float y = random.nextFloat() * (screenHeight - newFoodPoint.getHeight());
-        newFoodPoint.setImageResource(R.mipmap.food);
+        newFoodPoint.setImageResource(R.drawable.food);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 (screenWidth * 20 / 450), (screenHeight * 30 / 450));
         newFoodPoint.setLayoutParams(layoutParams);
@@ -327,7 +327,7 @@ public class NoWallsSnake extends AppCompatActivity {
             ImageView foodItem = new ImageView(NoWallsSnake.this);
             float x = random.nextFloat() * (screenWidth - foodItem.getWidth());
             float y = random.nextFloat() * (screenHeight - foodItem.getHeight());
-            foodItem.setImageResource(R.mipmap.food);
+            foodItem.setImageResource(R.drawable.food);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     (screenWidth * 20 / 450), (screenHeight * 30 / 450));
             foodItem.setLayoutParams(layoutParams);
@@ -521,7 +521,7 @@ public class NoWallsSnake extends AppCompatActivity {
                     ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
             head = new ImageView(this);
             head.setLayoutParams(layoutParams);
-            head.setImageResource(R.mipmap.head);
+            head.setImageResource(R.drawable.head);
             head.setX((screenWidth / 2) - head.getWidth());
             head.setY((screenHeight / 2) - head.getHeight());
             noWallsSnakeRelativeLayout.addView(head);

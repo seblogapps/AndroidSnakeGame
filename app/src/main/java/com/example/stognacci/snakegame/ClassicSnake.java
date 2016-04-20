@@ -88,7 +88,7 @@ public class ClassicSnake extends AppCompatActivity {
         preferences = getApplicationContext().getSharedPreferences(GameSettings.SHAREDPREFS_NAME, Context.MODE_PRIVATE);
         musicOnOff();
         classicSnakeRelativeLayout = (RelativeLayout) findViewById(R.id.classic_snake_layout);
-        classicSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake);
+        classicSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
         classicSnakeRelativeLayout.setPaddingRelative(GameSettings.LAYOUT_PADDING,
                 GameSettings.LAYOUT_PADDING, GameSettings.LAYOUT_PADDING, GameSettings.LAYOUT_PADDING);
 
@@ -245,14 +245,14 @@ public class ClassicSnake extends AppCompatActivity {
     private void shake() {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         shake.setDuration(GameSettings.SHAKE_DURATION);
-        classicSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake);
+        classicSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
         classicSnakeRelativeLayout.startAnimation(shake);
     }
 
     private void fadeAnimation() {
         if (playerScore % GameSettings.POINTS_ANIMATION == 0) {
             Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-            classicSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake_change);
+            classicSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake_change);
             classicSnakeRelativeLayout.startAnimation(fadeIn);
             fadeIn.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -262,7 +262,7 @@ public class ClassicSnake extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     Animation fadeOut = AnimationUtils.loadAnimation(ClassicSnake.this, R.anim.fade_out);
-                    classicSnakeRelativeLayout.setBackgroundResource(R.mipmap.background_for_snake);
+                    classicSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
                     classicSnakeRelativeLayout.startAnimation(fadeOut);
                 }
 
@@ -299,7 +299,7 @@ public class ClassicSnake extends AppCompatActivity {
 
     private void addTail() {
         ImageView tailImageView = new ImageView(ClassicSnake.this);
-        tailImageView.setImageResource(R.mipmap.head);
+        tailImageView.setImageResource(R.drawable.head);
         LinearLayout.LayoutParams layoutParams = new
                 LinearLayout.LayoutParams((screenWidth * 20) / 450, (screenHeight * 30) / 450);
         tailImageView.setLayoutParams(layoutParams);
@@ -312,7 +312,7 @@ public class ClassicSnake extends AppCompatActivity {
         ImageView newFoodPoint = new ImageView(ClassicSnake.this);
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
         float y = random.nextFloat() * (screenHeight - newFoodPoint.getHeight());
-        newFoodPoint.setImageResource(R.mipmap.food);
+        newFoodPoint.setImageResource(R.drawable.food);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
         newFoodPoint.setLayoutParams(layoutParams);
@@ -329,7 +329,7 @@ public class ClassicSnake extends AppCompatActivity {
             ImageView foodItem = new ImageView(ClassicSnake.this);
             float x = random.nextFloat() * (screenWidth - foodItem.getWidth());
             float y = random.nextFloat() * (screenHeight - foodItem.getHeight());
-            foodItem.setImageResource(R.mipmap.food);
+            foodItem.setImageResource(R.drawable.food);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
             foodItem.setLayoutParams(layoutParams);
@@ -525,7 +525,7 @@ public class ClassicSnake extends AppCompatActivity {
                     ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
             head = new ImageView(this);
             head.setLayoutParams(layoutParams);
-            head.setImageResource(R.mipmap.head);
+            head.setImageResource(R.drawable.head);
             head.setX((screenWidth / 2) - head.getWidth());
             head.setY((screenHeight / 2) - head.getHeight());
             classicSnakeRelativeLayout.addView(head);

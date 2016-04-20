@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_left"
         android:layout_toRightOf="@+id/btn_left"
-        android:src="@mipmap/up"/>
+        android:src="@drawable/up"/>
 
     <ImageView
         android:id="@+id/btn_down"
@@ -38,7 +38,7 @@
         android:layout_above="@id/score"
         android:layout_marginBottom="18dp"
         android:layout_toLeftOf="@+id/btn_right"
-        android:src="@mipmap/down"
+        android:src="@drawable/down"
         />
 
     <ImageView
@@ -48,7 +48,7 @@
         android:layout_above="@id/btn_down"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="18dp"
-        android:src="@mipmap/left"/>
+        android:src="@drawable/left"/>
 
     <ImageView
         android:id="@+id/btn_right"
@@ -56,5 +56,5 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/btn_down"
         android:layout_toRightOf="@id/btn_up"
-        android:src="@mipmap/right"/>
+        android:src="@drawable/right"/>
 </RelativeLayout>

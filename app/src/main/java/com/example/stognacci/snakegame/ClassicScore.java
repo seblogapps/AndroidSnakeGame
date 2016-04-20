@@ -67,7 +67,7 @@ public class ClassicScore extends AppCompatActivity {
                 scoreTextView.setText("Score: " + String.valueOf(playerScore));
                 scoreTextView.setTextColor(Color.WHITE);
                 scoreTextView.setGravity(Gravity.CENTER);
-                scoreTextView.setBackgroundResource(R.mipmap.menu_options);
+                scoreTextView.setBackgroundResource(R.drawable.menu_options);
             }
 
             @Override
@@ -115,7 +115,7 @@ public class ClassicScore extends AppCompatActivity {
         highScoreTextView.setText("High: " + String.valueOf(highScore));
         highScoreTextView.setTextColor(Color.WHITE);
         highScoreTextView.setGravity(Gravity.CENTER);
-        highScoreTextView.setBackgroundResource(R.mipmap.menu_options);
+        highScoreTextView.setBackgroundResource(R.drawable.menu_options);
 
     }
 
@@ -131,7 +131,7 @@ public class ClassicScore extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                playAgainImageView.setImageResource(R.mipmap.again);
+                playAgainImageView.setImageResource(R.drawable.again);
                 playAgainImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -164,20 +164,20 @@ public class ClassicScore extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(final Animation animation) {
-                mainMenuImageView.setImageResource(R.mipmap.menu);
+                mainMenuImageView.setImageResource(R.drawable.menu);
                 mainMenuImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                        scoreTextView.setBackgroundResource(R.mipmap.menu_options);
+                        scoreTextView.setBackgroundResource(R.drawable.menu_options);
                         scoreTextView.setText("");
                         scoreTextView.setTextColor(Color.BLACK);
-                        highScoreTextView.setBackgroundResource(R.mipmap.menu_options);
+                        highScoreTextView.setBackgroundResource(R.drawable.menu_options);
                         highScoreTextView.setText("");
                         highScoreTextView.setTextColor(Color.BLACK);
-                        playAgainImageView.setImageResource(R.mipmap.menu_options);
-                        mainMenuImageView.setImageResource(R.mipmap.menu_options);
+                        playAgainImageView.setImageResource(R.drawable.menu_options);
+                        mainMenuImageView.setImageResource(R.drawable.menu_options);
 
                         //Reverse the animation
                         Animation animationTopLeft = AnimationUtils.loadAnimation(ClassicScore.this, R.anim.reverse_for_classic_button);
