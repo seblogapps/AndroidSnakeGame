@@ -11,7 +11,7 @@ public final class GameSettings {
 
     public static final int POINTS_BOMB_ANIMATION = 15;
 
-    public static final int POINTS_ANIMATION = 4;
+    public static final int POINTS_ANIMATION = 10;
 
     public static final int NUMBER_BOMBS = 5;
 
