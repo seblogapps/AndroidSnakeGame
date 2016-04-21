@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -300,10 +298,10 @@ public class ClassicSnake extends AppCompatActivity {
 
     private void addTail() {
         ImageView tailImageView = new ImageView(ClassicSnake.this);
-        tailImageView.setImageResource(R.drawable.head);
+        tailImageView.setImageResource(R.drawable.head_new);
         LinearLayout.LayoutParams layoutParams = new
                 LinearLayout.LayoutParams((screenWidth * 20) / 450, (screenHeight * 30) / 450);
-        tailImageView.setLayoutParams(layoutParams);
+        //tailImageView.setLayoutParams(layoutParams);
         classicSnakeRelativeLayout.addView(tailImageView);
         parts.add(tailImageView);
     }
@@ -313,10 +311,10 @@ public class ClassicSnake extends AppCompatActivity {
         ImageView newFoodPoint = new ImageView(ClassicSnake.this);
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
         float y = random.nextFloat() * (screenHeight - newFoodPoint.getHeight());
-        newFoodPoint.setImageResource(R.drawable.food);
+        newFoodPoint.setImageResource(R.drawable.food_new);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
-        newFoodPoint.setLayoutParams(layoutParams);
+        //newFoodPoint.setLayoutParams(layoutParams);
         newFoodPoint.setX(x);
         newFoodPoint.setY(y);
         isCollide = false;
@@ -330,29 +328,15 @@ public class ClassicSnake extends AppCompatActivity {
             ImageView foodItem = new ImageView(ClassicSnake.this);
             float x = random.nextFloat() * (screenWidth - foodItem.getWidth());
             float y = random.nextFloat() * (screenHeight - foodItem.getHeight());
-            foodItem.setImageResource(R.drawable.food);
+            foodItem.setImageResource(R.drawable.food_new);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
-            foodItem.setLayoutParams(layoutParams);
+            //foodItem.setLayoutParams(layoutParams);
             foodItem.setX(x);
             foodItem.setY(y);
             classicSnakeRelativeLayout.addView(foodItem);
             foodPoints.add(i, foodItem);
         }
-    }
-
-    private Rect getDrawableRect(ImageView imageView) {
-        float left = imageView.getX();// - (imageView.getDrawable().getIntrinsicWidth() / 2);
-        float top = imageView.getY() + (imageView.getDrawable().getIntrinsicHeight() / 2);
-        float right = left + imageView.getDrawable().getIntrinsicWidth();
-        float bottom = top + imageView.getDrawable().getIntrinsicHeight();
-        Rect drawableRect = new Rect();
-        drawableRect.set((int) left, (int) top, (int) right, (int) bottom);
-        Log.d(LOG_TAG, "getDrawableRect:           " + drawableRect.flattenToString());
-        Rect hitRect = new Rect();
-        imageView.getHitRect(hitRect);
-        Log.d(LOG_TAG, "getHitRect:           " + hitRect.flattenToString());
-        return drawableRect;
     }
 
     private void update() {
@@ -365,35 +349,10 @@ public class ClassicSnake extends AppCompatActivity {
                         myHandler.post(new Runnable() {
                             @Override
                             public void run() {
-//                                .getHitRect is not returning correct Rect of head object, so I evaluate the containing Rect manually
-//                                Rect headRect = new Rect();
-//                                head.getHitRect(headRect);
-//                                Log.d(LOG_TAG, "Head Rect getHitRect:           " + headRect.flattenToString());
-                                float leftHead = head.getX() - (head.getDrawable().getIntrinsicWidth() / 2);
-                                float topHead = head.getY() - (head.getDrawable().getIntrinsicHeight() / 2);
-                                float rightHead = head.getX() + (head.getDrawable().getIntrinsicWidth() / 2);
-                                float bottomHead = head.getY() + (head.getDrawable().getIntrinsicHeight() / 2);
-
                                 for (int i = 0; i < foodPoints.size(); i++) {
                                     if (!isCollide) {
                                         ImageView p = foodPoints.get(i);
-//                                        Rect pRect = new Rect();
-//                                        p.getHitRect(pRect);
-                                        float leftPoint = p.getX() - p.getDrawable().getIntrinsicWidth();
-                                        float topPoint = p.getY() - p.getDrawable().getIntrinsicHeight();
-                                        float rightPoint = p.getX() + p.getDrawable().getIntrinsicWidth();
-                                        float bottomPoint = p.getY() + p.getDrawable().getIntrinsicHeight();
-                                        // Player bounding rectangle
-                                        //Rect rc1 = new Rect();
-                                        Rect headRect = getDrawableRect(head);
-                                        //rc1.set((int) leftHead, (int) topHead, (int) rightHead, (int) bottomHead);
-                                        // Food bounding rectangle
-                                        Rect foodRect = getDrawableRect(p);
-                                        Rect rc2 = new Rect();
-                                        rc2.set((int) leftPoint, (int) topPoint, (int) rightPoint, (int) bottomPoint);
-
-                                        if (Rect.intersects(headRect, rc2)) {
-                                            //if (Rect.intersects(headRect, pRect)) {
+                                        if (GameUtils.isColliding(head, p)){
                                             classicSnakeRelativeLayout.removeView(p);
                                             foodPoints.remove(i);
                                             playerScore++;
@@ -541,8 +500,8 @@ public class ClassicSnake extends AppCompatActivity {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                     ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
             head = new ImageView(this);
-            head.setImageResource(R.drawable.head);
-            head.setLayoutParams(layoutParams);
+            head.setImageResource(R.drawable.head_new);
+            //head.setLayoutParams(layoutParams);
             head.requestLayout();
             head.setX((screenWidth / 2) - head.getWidth());
             head.setY((screenHeight / 2) - head.getHeight());

@@ -271,6 +271,14 @@ public class NoWallsSnake extends AppCompatActivity {
         }
     }
 
+    static boolean isColliding(ImageView imageView1, ImageView imageView2) {
+        Rect imageView1Rect = new Rect();
+        Rect imageView2Rect = new Rect();
+        imageView1.getHitRect(imageView1Rect);
+        imageView2.getHitRect(imageView2Rect);
+        return (Rect.intersects(imageView1Rect, imageView2Rect));
+    }
+
     private void checkBitten() {
         ImageView snakeHead = parts.get(0);
         ImageView snakeTile;// = new ImageView(ClassicSnake.this);
