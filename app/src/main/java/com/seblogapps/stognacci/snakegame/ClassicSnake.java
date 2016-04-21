@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -72,6 +74,11 @@ public class ClassicSnake extends AppCompatActivity {
     private int speedX;
     private int speedY;
 
+    private SoundPool mSoundPool;
+    private int backgroundMusic;
+    private int soundPopId;
+    private int soundCollideId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +91,9 @@ public class ClassicSnake extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         preferences = getApplicationContext().getSharedPreferences(GameSettings.SHAREDPREFS_NAME, Context.MODE_PRIVATE);
+
         musicOnOff();
+
         classicSnakeRelativeLayout = (RelativeLayout) findViewById(R.id.classic_snake_layout);
         classicSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
         classicSnakeRelativeLayout.setPaddingRelative(GameSettings.LAYOUT_PADDING,
@@ -92,8 +101,8 @@ public class ClassicSnake extends AppCompatActivity {
 
         textScore = (TextView) findViewById(R.id.score);
 
-        speedX = (int) GameUtils.dpToPixel(getApplicationContext(), 5f);
-        speedY = (int) GameUtils.dpToPixel(getApplicationContext(), 5f);
+        speedX = (int) GameUtils.dpToPixel(ClassicSnake.this, 5f);
+        speedY = (int) GameUtils.dpToPixel(ClassicSnake.this, 5f);
 
         isInitialized = false;
     }
@@ -101,13 +110,17 @@ public class ClassicSnake extends AppCompatActivity {
 
     private void musicOnOff() {
         playMusic = preferences.getBoolean(GameSettings.SHAREDPREFS_MUSIC, true);
-        musicPlayer = MediaPlayer.create(ClassicSnake.this, R.raw.music);
 
         if (playMusic) {
+            musicPlayer = MediaPlayer.create(ClassicSnake.this, R.raw.music);
+            mSoundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+            soundPopId = mSoundPool.load(ClassicSnake.this, R.raw.blop, 1);
             musicPlayer.setLooping(true);
             musicPlayer.start();
         } else {
             musicPlayer.stop();
+            mSoundPool.release();
+            mSoundPool = null;
         }
     }
 
@@ -124,6 +137,10 @@ public class ClassicSnake extends AppCompatActivity {
         super.onPause();
         isPaused = true;
         musicPlayer.release();
+        if (mSoundPool != null) {
+            mSoundPool.release();
+            mSoundPool = null;
+        }
     }
 
     private void onSwipeRight() {
@@ -316,6 +333,9 @@ public class ClassicSnake extends AppCompatActivity {
         isCollide = false;
         classicSnakeRelativeLayout.addView(newFoodPoint);
         foodPoints.add(foodPoints.size(), newFoodPoint);
+        if (playMusic) {
+            mSoundPool.play(soundPopId, 1, 1, 1, 0, 1);
+        }
     }
 
     private void setFoodPoints() {
