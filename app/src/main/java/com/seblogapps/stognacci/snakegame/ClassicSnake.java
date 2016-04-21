@@ -110,12 +110,13 @@ public class ClassicSnake extends AppCompatActivity {
 
     private void musicOnOff() {
         playMusic = preferences.getBoolean(GameSettings.SHAREDPREFS_MUSIC, true);
+        musicPlayer = MediaPlayer.create(ClassicSnake.this, R.raw.music);
+        mSoundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 
         if (playMusic) {
-            musicPlayer = MediaPlayer.create(ClassicSnake.this, R.raw.music);
-            mSoundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
             soundPopId = mSoundPool.load(ClassicSnake.this, R.raw.blop, 1);
             musicPlayer.setLooping(true);
+            musicPlayer.setVolume(0.6f, 0.6f);
             musicPlayer.start();
         } else {
             musicPlayer.stop();
