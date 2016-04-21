@@ -107,7 +107,6 @@ public class ClassicSnake extends AppCompatActivity {
         isInitialized = false;
     }
 
-
     private void musicOnOff() {
         playMusic = preferences.getBoolean(GameSettings.SHAREDPREFS_MUSIC, true);
         musicPlayer = MediaPlayer.create(ClassicSnake.this, R.raw.music);
@@ -138,6 +137,11 @@ public class ClassicSnake extends AppCompatActivity {
         super.onPause();
         isPaused = true;
         musicPlayer.release();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         if (mSoundPool != null) {
             mSoundPool.release();
             mSoundPool = null;
