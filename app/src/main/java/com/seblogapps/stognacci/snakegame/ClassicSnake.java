@@ -344,8 +344,8 @@ public class ClassicSnake extends AppCompatActivity {
     private Rect getDrawableRect(ImageView imageView) {
         float left = imageView.getX();// - (imageView.getDrawable().getIntrinsicWidth() / 2);
         float top = imageView.getY() + (imageView.getDrawable().getIntrinsicHeight() / 2);
-        float right = imageView.getX() + (imageView.getDrawable().getIntrinsicWidth() / 1);
-        float bottom = imageView.getY() + (imageView.getDrawable().getIntrinsicHeight() / 2);
+        float right = left + imageView.getDrawable().getIntrinsicWidth();
+        float bottom = top + imageView.getDrawable().getIntrinsicHeight();
         Rect drawableRect = new Rect();
         drawableRect.set((int) left, (int) top, (int) right, (int) bottom);
         Log.d(LOG_TAG, "getDrawableRect:           " + drawableRect.flattenToString());
