@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -284,7 +283,7 @@ public class ClassicSnake extends AppCompatActivity {
 
     private void checkBitten() {
         ImageView snakeHead = parts.get(0);
-        ImageView snakeTile;// = new ImageView(ClassicSnake.this);
+        ImageView snakeTile;
 
         for (int i = 1; i < parts.size(); i++) {
             snakeTile = parts.get(i);
@@ -299,9 +298,6 @@ public class ClassicSnake extends AppCompatActivity {
     private void addTail() {
         ImageView tailImageView = new ImageView(ClassicSnake.this);
         tailImageView.setImageResource(R.drawable.head_new);
-        LinearLayout.LayoutParams layoutParams = new
-                LinearLayout.LayoutParams((screenWidth * 20) / 450, (screenHeight * 30) / 450);
-        //tailImageView.setLayoutParams(layoutParams);
         classicSnakeRelativeLayout.addView(tailImageView);
         parts.add(tailImageView);
     }
@@ -312,9 +308,6 @@ public class ClassicSnake extends AppCompatActivity {
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
         float y = random.nextFloat() * (screenHeight - newFoodPoint.getHeight());
         newFoodPoint.setImageResource(R.drawable.food_new);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
-        //newFoodPoint.setLayoutParams(layoutParams);
         newFoodPoint.setX(x);
         newFoodPoint.setY(y);
         isCollide = false;
@@ -329,9 +322,6 @@ public class ClassicSnake extends AppCompatActivity {
             float x = random.nextFloat() * (screenWidth - foodItem.getWidth());
             float y = random.nextFloat() * (screenHeight - foodItem.getHeight());
             foodItem.setImageResource(R.drawable.food_new);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
-            //foodItem.setLayoutParams(layoutParams);
             foodItem.setX(x);
             foodItem.setY(y);
             classicSnakeRelativeLayout.addView(foodItem);
@@ -358,6 +348,8 @@ public class ClassicSnake extends AppCompatActivity {
                                             playerScore++;
                                             isCollide = true;
                                             textScore.setText(getString(R.string.gamescreen_score) + playerScore);
+                                            speedX++;
+                                            speedY++;
                                             setNewPoint();
                                             addTail();
                                             shake();
@@ -377,8 +369,8 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setX(currentPart.getX() + speedX);
-                                            if (currentPart.getX() + (currentPart.getDrawable().getIntrinsicWidth()) >= screenWidth) {
-                                                currentPart.setX(screenWidth - currentPart.getDrawable().getIntrinsicWidth());
+                                            if (currentPart.getX() + currentPart.getWidth() >= screenWidth) {
+                                                currentPart.setX(screenWidth - currentPart.getWidth());
                                                 collide();
                                             }
                                         }
@@ -409,8 +401,8 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() + speedY);
-                                            if (currentPart.getY() + currentPart.getDrawable().getIntrinsicHeight() >= screenHeight) {
-                                                currentPart.setY(screenHeight - currentPart.getDrawable().getIntrinsicHeight());
+                                            if (currentPart.getY() + currentPart.getHeight() >= screenHeight) {
+                                                currentPart.setY(screenHeight - currentPart.getHeight());
                                                 collide();
                                             }
                                         }
@@ -425,8 +417,8 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() - speedY);
-                                            if (currentPart.getY() + currentPart.getDrawable().getIntrinsicHeight() <= 0) {
-                                                currentPart.setY(0 - currentPart.getDrawable().getIntrinsicHeight());
+                                            if (currentPart.getY() <= 0) {
+                                                currentPart.setY(0);
                                                 collide();
                                             }
                                         }
@@ -477,7 +469,6 @@ public class ClassicSnake extends AppCompatActivity {
                     }
                     result = true;
                 }
-
             }
             return result;
         }
@@ -497,11 +488,8 @@ public class ClassicSnake extends AppCompatActivity {
             screenHeight = size.y;
             myHandler = new Handler();
             mGestureDetector = new GestureDetector(null, new SwipeGestureDetector());
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
             head = new ImageView(this);
             head.setImageResource(R.drawable.head_new);
-            //head.setLayoutParams(layoutParams);
             head.requestLayout();
             head.setX((screenWidth / 2) - head.getWidth());
             head.setY((screenHeight / 2) - head.getHeight());
@@ -510,11 +498,6 @@ public class ClassicSnake extends AppCompatActivity {
             parts = new ArrayList<ImageView>();
             foodPoints = new ArrayList<ImageView>();
             parts.add(0, head);
-
-            layoutParams.setMargins(GameSettings.LAYOUT_PADDING,
-                    GameSettings.LAYOUT_PADDING,
-                    GameSettings.LAYOUT_PADDING,
-                    GameSettings.LAYOUT_PADDING);
 
             setFoodPoints();
             buttonsDirectionInit();
