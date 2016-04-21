@@ -48,6 +48,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="-32dp"
         android:layout_toLeftOf="@+id/snake_middle"
+
         android:src="@drawable/menu_options"/>
 
     <ImageView

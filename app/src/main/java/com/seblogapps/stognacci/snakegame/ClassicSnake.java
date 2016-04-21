@@ -349,6 +349,9 @@ public class ClassicSnake extends AppCompatActivity {
         Rect drawableRect = new Rect();
         drawableRect.set((int) left, (int) top, (int) right, (int) bottom);
         Log.d(LOG_TAG, "getDrawableRect:           " + drawableRect.flattenToString());
+        Rect hitRect = new Rect();
+        imageView.getHitRect(hitRect);
+        Log.d(LOG_TAG, "getHitRect:           " + hitRect.flattenToString());
         return drawableRect;
     }
 
@@ -385,6 +388,7 @@ public class ClassicSnake extends AppCompatActivity {
                                         Rect headRect = getDrawableRect(head);
                                         //rc1.set((int) leftHead, (int) topHead, (int) rightHead, (int) bottomHead);
                                         // Food bounding rectangle
+                                        Rect foodRect = getDrawableRect(p);
                                         Rect rc2 = new Rect();
                                         rc2.set((int) leftPoint, (int) topPoint, (int) rightPoint, (int) bottomPoint);
 
@@ -537,8 +541,9 @@ public class ClassicSnake extends AppCompatActivity {
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                     ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
             head = new ImageView(this);
-            head.setLayoutParams(layoutParams);
             head.setImageResource(R.drawable.head);
+            head.setLayoutParams(layoutParams);
+            head.requestLayout();
             head.setX((screenWidth / 2) - head.getWidth());
             head.setY((screenHeight / 2) - head.getHeight());
             classicSnakeRelativeLayout.addView(head);
