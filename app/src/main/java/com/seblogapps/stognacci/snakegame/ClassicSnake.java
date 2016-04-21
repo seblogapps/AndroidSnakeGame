@@ -69,8 +69,8 @@ public class ClassicSnake extends AppCompatActivity {
 
     private TextView textScore;
 
-    private int speedX = 16;
-    private int speedY = 16;
+    private int speedX;
+    private int speedY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +91,9 @@ public class ClassicSnake extends AppCompatActivity {
                 GameSettings.LAYOUT_PADDING, GameSettings.LAYOUT_PADDING, GameSettings.LAYOUT_PADDING);
 
         textScore = (TextView) findViewById(R.id.score);
+
+        speedX = (int) GameUtils.dpToPixel(getApplicationContext(), 5f);
+        speedY = (int) GameUtils.dpToPixel(getApplicationContext(), 5f);
 
         isInitialized = false;
     }
@@ -342,7 +345,7 @@ public class ClassicSnake extends AppCompatActivity {
                                 for (int i = 0; i < foodPoints.size(); i++) {
                                     if (!isCollide) {
                                         ImageView p = foodPoints.get(i);
-                                        if (GameUtils.isColliding(head, p)){
+                                        if (GameUtils.isColliding(head, p)) {
                                             classicSnakeRelativeLayout.removeView(p);
                                             foodPoints.remove(i);
                                             playerScore++;
