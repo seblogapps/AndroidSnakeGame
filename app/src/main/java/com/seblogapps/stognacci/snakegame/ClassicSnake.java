@@ -275,7 +275,7 @@ public class ClassicSnake extends AppCompatActivity {
         }
     }
 
-    private void collide() {
+    private void gameOver() {
         gameOver = true;
         if (playMusic) {
             mSoundPool.play(soundCrashId, 1.0f, 1.0f, 1, 0, 1);
@@ -296,7 +296,7 @@ public class ClassicSnake extends AppCompatActivity {
             snakeTile = parts.get(i);
             if (snakeHead.getX() == snakeTile.getX() &&
                     snakeHead.getY() == snakeTile.getY()) {
-                collide();
+                gameOver();
                 break;
             }
         }
@@ -381,7 +381,7 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setX(currentPart.getX() + speedX);
                                             if (currentPart.getX() + currentPart.getWidth() >= screenWidth) {
                                                 currentPart.setX(screenWidth - currentPart.getWidth());
-                                                collide();
+                                                gameOver();
                                             }
                                         }
                                     }
@@ -397,7 +397,7 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setX(currentPart.getX() - speedX);
                                             if (currentPart.getX() <= 0) {
                                                 currentPart.setX(0);
-                                                collide();
+                                                gameOver();
                                             }
                                         }
                                     }
@@ -413,7 +413,7 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setY(currentPart.getY() + speedY);
                                             if (currentPart.getY() + currentPart.getHeight() >= screenHeight) {
                                                 currentPart.setY(screenHeight - currentPart.getHeight());
-                                                collide();
+                                                gameOver();
                                             }
                                         }
                                     }
@@ -429,7 +429,7 @@ public class ClassicSnake extends AppCompatActivity {
                                             currentPart.setY(currentPart.getY() - speedY);
                                             if (currentPart.getY() <= 0) {
                                                 currentPart.setY(0);
-                                                collide();
+                                                gameOver();
                                             }
                                         }
                                     }

@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -67,7 +71,7 @@ public class BombSnake extends AppCompatActivity {
     private ArrayList<ImageView> foodPoints;
     private boolean isCollide = false;
 
-    private ImageView poison;
+    private ImageView bomb;
     private ArrayList<ImageView> bombs;
 
     private Handler myHandler;
@@ -75,9 +79,12 @@ public class BombSnake extends AppCompatActivity {
 
     private TextView textScore;
 
-    private int speedX = 16;
-    private int speedY = 16;
+    private int speedX;
+    private int speedY;
 
+    private SoundPool mSoundPool;
+    private int soundPopId;
+    private int soundCrashId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +98,7 @@ public class BombSnake extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         preferences = getApplicationContext().getSharedPreferences(GameSettings.SHAREDPREFS_NAME, Context.MODE_PRIVATE);
-        musicOnOff();
+        initializeSoundResources();
         bombSnakeRelativeLayout = (RelativeLayout) findViewById(R.id.bomb_snake_layout);
         bombSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
         bombSnakeRelativeLayout.setPaddingRelative(GameSettings.LAYOUT_PADDING,
@@ -102,12 +109,27 @@ public class BombSnake extends AppCompatActivity {
         isInitialized = false;
     }
 
-
-    private void musicOnOff() {
+    private void initializeSoundResources() {
         playMusic = preferences.getBoolean(GameSettings.SHAREDPREFS_MUSIC, true);
-        musicPlayer = MediaPlayer.create(BombSnake.this, R.raw.music);
+        musicPlayer = MediaPlayer.create(BombSnake.this, R.raw.bombmusic);
         if (playMusic) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_GAME)
+                        .build();
+                mSoundPool = new SoundPool.Builder()
+                        .setMaxStreams(3)
+                        .setAudioAttributes(audioAttributes)
+                        .build();
+            } else {
+                mSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 1);
+            }
+            soundPopId = mSoundPool.load(this, R.raw.blop, 1);
+            soundCrashId = mSoundPool.load(this, R.raw.crash, 1);
+
             musicPlayer.setLooping(true);
+            musicPlayer.setVolume(0.6f, 0.6f);
             musicPlayer.start();
         } else {
             musicPlayer.stop();
@@ -126,7 +148,19 @@ public class BombSnake extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         isPaused = true;
-        musicPlayer.release();
+        if (playMusic) {
+            musicPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (playMusic) {
+            musicPlayer.release();
+            mSoundPool.release();
+            mSoundPool = null;
+        }
     }
 
     private void onSwipeRight() {
@@ -278,7 +312,7 @@ public class BombSnake extends AppCompatActivity {
 
     private void checkBitten() {
         ImageView snakeHead = parts.get(0);
-        ImageView snakeTile;// = new ImageView(ClassicSnake.this);
+        ImageView snakeTile;
 
         for (int i = 1; i < parts.size(); i++) {
             snakeTile = parts.get(i);
@@ -316,9 +350,6 @@ public class BombSnake extends AppCompatActivity {
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
         float y = random.nextFloat() * (screenHeight - newFoodPoint.getHeight());
         newFoodPoint.setImageResource(R.drawable.food);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                (screenWidth * 20 / 450), (screenHeight * 30 / 450));
-        newFoodPoint.setLayoutParams(layoutParams);
         newFoodPoint.setX(x);
         newFoodPoint.setY(y);
         isCollide = false;
@@ -333,9 +364,6 @@ public class BombSnake extends AppCompatActivity {
             float x = random.nextFloat() * (screenWidth - foodItem.getWidth());
             float y = random.nextFloat() * (screenHeight - foodItem.getHeight());
             foodItem.setImageResource(R.drawable.food);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    (screenWidth * 20 / 450), (screenHeight * 30 / 450));
-            foodItem.setLayoutParams(layoutParams);
             foodItem.setX(x);
             foodItem.setY(y);
             bombSnakeRelativeLayout.addView(foodItem);
@@ -373,31 +401,20 @@ public class BombSnake extends AppCompatActivity {
                             @Override
                             public void run() {
                                 Rect headRect = new Rect();
-                                //head.getLocalVisibleRect(headRect);
-                                head.getHitRect(headRect);
-                                Log.d(LOG_TAG, "Head Rect getHitRect: " + headRect.flattenToString());
-//                                head.getLocalVisibleRect(headRect);
-//                                Log.d(LOG_TAG, "Head Rect getLocalVisibleRect: " + headRect.flattenToString());
-                                head.getGlobalVisibleRect(headRect);
-                                Log.d(LOG_TAG, "Head Rect getGlobalVisibleRect: " + headRect.flattenToString());
                                 float left = head.getX();// - head.getWidth();
                                 float top = head.getY();// - head.getHeight();
                                 float right = head.getX() + head.getWidth();
                                 float bottom = head.getY() + head.getHeight();
-                                Log.d(LOG_TAG, "Head Rect Tim Coordinates: l:" + left + " t:" + top + " r:" + right + " b:" + bottom);
-
                                 for (int i = 0; i < foodPoints.size(); i++) {
                                     if (!isCollide) {
                                         ImageView p = foodPoints.get(i);
                                         Rect pRect = new Rect();
                                         //p.getLocalVisibleRect(pRect);
                                         p.getHitRect(pRect);
-                                        Log.d(LOG_TAG, "FoodPoint Rect getHitRect: (" + i + ")" + pRect.flattenToString());
                                         float left1 = p.getX() - p.getWidth();
                                         float top1 = p.getY() - p.getHeight();
                                         float right1 = p.getX() + p.getWidth();
                                         float bottom1 = p.getY() + p.getHeight();
-                                        Log.d(LOG_TAG, "FoodPoint Rect Tim Coordinates: (" + i + ")" + " l:" + left1 + " t:" + top1 + " r:" + right1 + " b:" + bottom1);
                                         // Player bounding rectangle
                                         Rect rc1 = new Rect();
                                         rc1.set((int) left, (int) top, (int) right, (int) bottom);
@@ -423,7 +440,7 @@ public class BombSnake extends AppCompatActivity {
                                         checkBitten();
                                     }
                                 }
-                                for (int i=0; i<bombs.size(); i++) {
+                                for (int i = 0; i< bombs.size(); i++) {
                                     ImageView bomb = bombs.get(i);
                                     Rect bombRect = new Rect();
                                     bomb.getGlobalVisibleRect(bombRect);
@@ -450,7 +467,6 @@ public class BombSnake extends AppCompatActivity {
                                         } else { // Head
                                             currentPart.setX(currentPart.getX() + speedX);
                                             if (currentPart.getX() + currentPart.getWidth() >= screenWidth) {
-                                                //currentPart.setX(screenWidth - currentPart.getWidth() / 2);
                                                 currentPart.setX(0);
                                             }
                                         }
@@ -578,11 +594,6 @@ public class BombSnake extends AppCompatActivity {
             parts = new ArrayList<ImageView>();
             foodPoints = new ArrayList<ImageView>();
             parts.add(0, head);
-
-            layoutParams.setMargins(GameSettings.LAYOUT_PADDING,
-                    GameSettings.LAYOUT_PADDING,
-                    GameSettings.LAYOUT_PADDING,
-                    GameSettings.LAYOUT_PADDING);
 
             setFoodPoints();
             bombs = new ArrayList<ImageView>();
