@@ -522,7 +522,6 @@ public class ClassicSnake extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        Log.d(LOG_TAG, "Entered onWindowFocusChanged method " + "isInit: " + isInitialized + " hasFocus: " + hasFocus + " isPaused: " + isPaused + " speed" + speedX);
         if (!isInitialized) {
             isInitialized = true;
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -555,6 +554,9 @@ public class ClassicSnake extends AppCompatActivity {
         }
         if (isInitialized && hasFocus) {
             isPaused = false;
+            if (playMusic) {
+                musicPlayer.start();
+            }
             update();
         }
         super.onWindowFocusChanged(hasFocus);
