@@ -304,7 +304,7 @@ public class BombSnake extends AppCompatActivity {
 
     private void addTail() {
         ImageView tailImageView = new ImageView(BombSnake.this);
-        tailImageView.setImageResource(R.drawable.head_new);
+        tailImageView.setImageResource(R.drawable.head);
         bombSnakeRelativeLayout.addView(tailImageView);
         parts.add(tailImageView);
     }
@@ -314,7 +314,7 @@ public class BombSnake extends AppCompatActivity {
         ImageView newFoodPoint = new ImageView(BombSnake.this);
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
         float y = random.nextFloat() * (screenHeight - newFoodPoint.getHeight());
-        newFoodPoint.setImageResource(R.drawable.food_new);
+        newFoodPoint.setImageResource(R.drawable.food);
         newFoodPoint.setX(x);
         newFoodPoint.setY(y);
         isCollide = false;
@@ -337,7 +337,7 @@ public class BombSnake extends AppCompatActivity {
             ImageView bomb = new ImageView(this);
             float x = (random.nextFloat() * screenWidth - bomb.getWidth());
             float y = (random.nextFloat() * screenHeight - bomb.getHeight());
-            bomb.setImageResource(R.drawable.poison_new);
+            bomb.setImageResource(R.drawable.poison);
             bomb.setX(x);
             bomb.setY(y);
             bombSnakeRelativeLayout.addView(bomb);
@@ -517,7 +517,7 @@ public class BombSnake extends AppCompatActivity {
             myHandler = new Handler();
             mGestureDetector = new GestureDetector(null, new SwipeGestureDetector());
             head = new ImageView(this);
-            head.setImageResource(R.drawable.head_new);
+            head.setImageResource(R.drawable.head);
             head.requestLayout();
             head.setX((screenWidth / 2) - head.getWidth());
             head.setY((screenHeight / 2) - head.getHeight());

@@ -301,7 +301,7 @@ public class NoWallsSnake extends AppCompatActivity {
 
     private void addTail() {
         ImageView tailImageView = new ImageView(NoWallsSnake.this);
-        tailImageView.setImageResource(R.drawable.head_new);
+        tailImageView.setImageResource(R.drawable.head);
         noWallsSnakeRelativeLayout.addView(tailImageView);
         parts.add(tailImageView);
     }
@@ -311,7 +311,7 @@ public class NoWallsSnake extends AppCompatActivity {
         ImageView newFoodPoint = new ImageView(NoWallsSnake.this);
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
         float y = random.nextFloat() * (screenHeight - newFoodPoint.getHeight());
-        newFoodPoint.setImageResource(R.drawable.food_new);
+        newFoodPoint.setImageResource(R.drawable.food);
         newFoodPoint.setX(x);
         newFoodPoint.setY(y);
         isCollide = false;
@@ -486,7 +486,7 @@ public class NoWallsSnake extends AppCompatActivity {
             myHandler = new Handler();
             mGestureDetector = new GestureDetector(null, new SwipeGestureDetector());
             head = new ImageView(this);
-            head.setImageResource(R.drawable.head_new);
+            head.setImageResource(R.drawable.head);
             head.requestLayout();
             head.setX((screenWidth / 2) - head.getWidth());
             head.setY((screenHeight / 2) - head.getHeight());
