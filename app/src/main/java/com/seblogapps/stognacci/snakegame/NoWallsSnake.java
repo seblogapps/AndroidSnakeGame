@@ -306,7 +306,7 @@ public class NoWallsSnake extends AppCompatActivity {
         parts.add(tailImageView);
     }
 
-    private void setNewPoint() {
+    private void setNewPoint(boolean isPopSoundEnabled) {
         Random random = new Random();
         ImageView newFoodPoint = new ImageView(NoWallsSnake.this);
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
@@ -317,22 +317,14 @@ public class NoWallsSnake extends AppCompatActivity {
         isCollide = false;
         noWallsSnakeRelativeLayout.addView(newFoodPoint);
         foodPoints.add(foodPoints.size(), newFoodPoint);
-        if (playMusic) {
+        if (playMusic && isPopSoundEnabled) {
             mSoundPool.play(soundPopId, 1, 1, 1, 0, 1);
         }
     }
 
-    private void setFoodPoints() {
-        for (int i = 0; i < GameSettings.FOOD_POINTS; i++) {
-            Random random = new Random();
-            ImageView foodItem = new ImageView(NoWallsSnake.this);
-            float x = random.nextFloat() * (screenWidth - foodItem.getWidth());
-            float y = random.nextFloat() * (screenHeight - foodItem.getHeight());
-            foodItem.setImageResource(R.drawable.food_new);
-            foodItem.setX(x);
-            foodItem.setY(y);
-            noWallsSnakeRelativeLayout.addView(foodItem);
-            foodPoints.add(i, foodItem);
+    private void setFoodPoints(int numPoints) {
+        for (int i = 0; i < numPoints; i++) {
+            setNewPoint(false);
         }
     }
 
@@ -357,7 +349,7 @@ public class NoWallsSnake extends AppCompatActivity {
                                             textScore.setText(getString(R.string.gamescreen_score) + playerScore);
                                             speedX++;
                                             speedY++;
-                                            setNewPoint();
+                                            setNewPoint(true);
                                             addTail();
                                             GameUtils.shakeScreen(NoWallsSnake.this, noWallsSnakeRelativeLayout);
                                             GameUtils.fadeAnimation(NoWallsSnake.this, noWallsSnakeRelativeLayout, playerScore);
@@ -505,7 +497,7 @@ public class NoWallsSnake extends AppCompatActivity {
             parts.add(0, head);
 
 
-            setFoodPoints();
+            setFoodPoints(GameSettings.FOOD_POINTS);
             buttonsDirectionInit();
 
         }
