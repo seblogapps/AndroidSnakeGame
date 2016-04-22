@@ -18,8 +18,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -279,37 +277,6 @@ public class ClassicSnake extends AppCompatActivity {
         }
     }
 
-    private void shake() {
-        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        shake.setDuration(GameSettings.SHAKE_DURATION);
-        classicSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
-        classicSnakeRelativeLayout.startAnimation(shake);
-    }
-
-    private void fadeAnimation() {
-        if (playerScore % GameSettings.POINTS_ANIMATION == 0) {
-            Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-            classicSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake_change);
-            classicSnakeRelativeLayout.startAnimation(fadeIn);
-            fadeIn.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    Animation fadeOut = AnimationUtils.loadAnimation(ClassicSnake.this, R.anim.fade_out);
-                    classicSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
-                    classicSnakeRelativeLayout.startAnimation(fadeOut);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-            });
-        }
-    }
-
     private void collide() {
         gameOver = true;
         if (playMusic) {
@@ -397,8 +364,8 @@ public class ClassicSnake extends AppCompatActivity {
                                             speedY++;
                                             setNewPoint();
                                             addTail();
-                                            shake();
-                                            fadeAnimation();
+                                            GameUtils.shakeScreen(ClassicSnake.this, classicSnakeRelativeLayout);
+                                            GameUtils.fadeAnimation(ClassicSnake.this, classicSnakeRelativeLayout, playerScore);
                                         }
                                         checkBitten();
                                     }
