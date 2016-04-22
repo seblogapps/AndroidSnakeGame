@@ -133,10 +133,10 @@ public class BombScore extends AppCompatActivity {
                 playAgainImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intentClassic = new Intent(BombScore.this, BombSnake.class);
-                        intentClassic.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intentClassic.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intentClassic);
+                        Intent intentBombMode = new Intent(BombScore.this, BombSnake.class);
+                        intentBombMode.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intentBombMode.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intentBombMode);
                     }
                 });
             }

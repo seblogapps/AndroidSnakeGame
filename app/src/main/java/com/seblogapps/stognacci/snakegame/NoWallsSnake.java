@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
-import android.graphics.Rect;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +17,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -71,8 +71,12 @@ public class NoWallsSnake extends AppCompatActivity {
 
     private TextView textScore;
 
-    private int speedX = 16;
-    private int speedY = 16;
+    private int speedX;
+    private int speedY;
+
+    private SoundPool mSoundPool;
+    private int soundPopId;
+    private int soundCrashId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +90,7 @@ public class NoWallsSnake extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         preferences = getApplicationContext().getSharedPreferences(GameSettings.SHAREDPREFS_NAME, Context.MODE_PRIVATE);
-        musicOnOff();
+        initializeSoundResources();
         noWallsSnakeRelativeLayout = (RelativeLayout) findViewById(R.id.nowalls_snake_layout);
         noWallsSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
         noWallsSnakeRelativeLayout.setPaddingRelative(GameSettings.LAYOUT_PADDING,
@@ -97,12 +101,27 @@ public class NoWallsSnake extends AppCompatActivity {
         isInitialized = false;
     }
 
-
-    private void musicOnOff() {
+    private void initializeSoundResources() {
         playMusic = preferences.getBoolean(GameSettings.SHAREDPREFS_MUSIC, true);
-        musicPlayer = MediaPlayer.create(NoWallsSnake.this, R.raw.music);
+        musicPlayer = MediaPlayer.create(NoWallsSnake.this, R.raw.nowallsmusic);
         if (playMusic) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_GAME)
+                        .build();
+                mSoundPool = new SoundPool.Builder()
+                        .setMaxStreams(3)
+                        .setAudioAttributes(audioAttributes)
+                        .build();
+            } else {
+                mSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 1);
+            }
+            soundPopId = mSoundPool.load(this, R.raw.blop, 1);
+            soundCrashId = mSoundPool.load(this, R.raw.crash, 1);
+
             musicPlayer.setLooping(true);
+            musicPlayer.setVolume(0.6f, 0.6f);
             musicPlayer.start();
         } else {
             musicPlayer.stop();
@@ -121,7 +140,19 @@ public class NoWallsSnake extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         isPaused = true;
-        musicPlayer.release();
+        if (playMusic) {
+            musicPlayer.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (playMusic) {
+            musicPlayer.release();
+            mSoundPool.release();
+            mSoundPool = null;
+        }
     }
 
     private void onSwipeRight() {
@@ -226,6 +257,7 @@ public class NoWallsSnake extends AppCompatActivity {
                 onClickUp();
             }
         });
+
         useSwipeControls = preferences.getBoolean(GameSettings.SHAREDPREFS_CONTROLS, true);
         if (!useSwipeControls) {
             btnRight.setVisibility(View.VISIBLE);
@@ -240,48 +272,22 @@ public class NoWallsSnake extends AppCompatActivity {
         }
     }
 
-    private void shake() {
-        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        shake.setDuration(GameSettings.SHAKE_DURATION);
-        noWallsSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
-        noWallsSnakeRelativeLayout.startAnimation(shake);
-    }
-
-    private void fadeAnimation() {
-        if (playerScore % GameSettings.POINTS_ANIMATION == 0) {
-            Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-            noWallsSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake_change);
-            noWallsSnakeRelativeLayout.startAnimation(fadeIn);
-            fadeIn.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    Animation fadeOut = AnimationUtils.loadAnimation(NoWallsSnake.this, R.anim.fade_out);
-                    noWallsSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
-                    noWallsSnakeRelativeLayout.startAnimation(fadeOut);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-            });
+    private void gameOver() {
+        gameOver = true;
+        if (playMusic) {
+            mSoundPool.play(soundCrashId, 1.0f, 1.0f, 1, 0, 1);
         }
-    }
-
-    static boolean isColliding(ImageView imageView1, ImageView imageView2) {
-        Rect imageView1Rect = new Rect();
-        Rect imageView2Rect = new Rect();
-        imageView1.getHitRect(imageView1Rect);
-        imageView2.getHitRect(imageView2Rect);
-        return (Rect.intersects(imageView1Rect, imageView2Rect));
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(GameSettings.SHAREDPREFS_LASTSCORE, playerScore);
+        editor.apply();
+        Intent intentScore = new Intent(NoWallsSnake.this, NoWallsScore.class);
+        intentScore.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intentScore);
     }
 
     private void checkBitten() {
         ImageView snakeHead = parts.get(0);
-        ImageView snakeTile;// = new ImageView(ClassicSnake.this);
+        ImageView snakeTile;
 
         for (int i = 1; i < parts.size(); i++) {
             snakeTile = parts.get(i);
@@ -293,22 +299,9 @@ public class NoWallsSnake extends AppCompatActivity {
         }
     }
 
-    private void gameOver() {
-        gameOver = true;
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(GameSettings.SHAREDPREFS_LASTSCORE, playerScore);
-        editor.apply();
-        Intent intentScore = new Intent(NoWallsSnake.this, NoWallsScore.class);
-        intentScore.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intentScore);
-    }
-
     private void addTail() {
         ImageView tailImageView = new ImageView(NoWallsSnake.this);
-        tailImageView.setImageResource(R.drawable.head);
-        LinearLayout.LayoutParams layoutParams = new
-                LinearLayout.LayoutParams((screenWidth * 20) / 450, (screenHeight * 30) / 450);
-        tailImageView.setLayoutParams(layoutParams);
+        tailImageView.setImageResource(R.drawable.head_new);
         noWallsSnakeRelativeLayout.addView(tailImageView);
         parts.add(tailImageView);
     }
@@ -318,15 +311,15 @@ public class NoWallsSnake extends AppCompatActivity {
         ImageView newFoodPoint = new ImageView(NoWallsSnake.this);
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
         float y = random.nextFloat() * (screenHeight - newFoodPoint.getHeight());
-        newFoodPoint.setImageResource(R.drawable.food);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                (screenWidth * 20 / 450), (screenHeight * 30 / 450));
-        newFoodPoint.setLayoutParams(layoutParams);
+        newFoodPoint.setImageResource(R.drawable.food_new);
         newFoodPoint.setX(x);
         newFoodPoint.setY(y);
         isCollide = false;
         noWallsSnakeRelativeLayout.addView(newFoodPoint);
         foodPoints.add(foodPoints.size(), newFoodPoint);
+        if (playMusic) {
+            mSoundPool.play(soundPopId, 1, 1, 1, 0, 1);
+        }
     }
 
     private void setFoodPoints() {
@@ -335,10 +328,7 @@ public class NoWallsSnake extends AppCompatActivity {
             ImageView foodItem = new ImageView(NoWallsSnake.this);
             float x = random.nextFloat() * (screenWidth - foodItem.getWidth());
             float y = random.nextFloat() * (screenHeight - foodItem.getHeight());
-            foodItem.setImageResource(R.drawable.food);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    (screenWidth * 20 / 450), (screenHeight * 30 / 450));
-            foodItem.setLayoutParams(layoutParams);
+            foodItem.setImageResource(R.drawable.food_new);
             foodItem.setX(x);
             foodItem.setY(y);
             noWallsSnakeRelativeLayout.addView(foodItem);
@@ -356,42 +346,21 @@ public class NoWallsSnake extends AppCompatActivity {
                         myHandler.post(new Runnable() {
                             @Override
                             public void run() {
-//                                .getHitRect is not returning correct Rect of head object, so I evaluate the containing Rect manually
-//                                Rect headRect = new Rect();
-//                                head.getHitRect(headRect);
-//                                Log.d(LOG_TAG, "Head Rect getHitRect:           " + headRect.flattenToString());
-                                float leftHead = head.getX() - (head.getDrawable().getIntrinsicWidth() / 2);
-                                float topHead = head.getY() - (head.getDrawable().getIntrinsicHeight() / 2);
-                                float rightHead = head.getX() + (head.getDrawable().getIntrinsicWidth() / 2);
-                                float bottomHead = head.getY() + (head.getDrawable().getIntrinsicHeight() / 2);
-
                                 for (int i = 0; i < foodPoints.size(); i++) {
                                     if (!isCollide) {
-                                        ImageView p = foodPoints.get(i);
-//                                        Rect pRect = new Rect();
-//                                        p.getHitRect(pRect);
-                                        float leftPoint = p.getX() - p.getDrawable().getIntrinsicWidth();
-                                        float topPoint = p.getY() - p.getDrawable().getIntrinsicHeight();
-                                        float rightPoint = p.getX() + p.getDrawable().getIntrinsicWidth();
-                                        float bottomPoint = p.getY() + p.getDrawable().getIntrinsicHeight();
-                                        // Player bounding rectangle
-                                        Rect rc1 = new Rect();
-                                        rc1.set((int) leftHead, (int) topHead, (int) rightHead, (int) bottomHead);
-                                        // Food bounding rectangle
-                                        Rect rc2 = new Rect();
-                                        rc2.set((int) leftPoint, (int) topPoint, (int) rightPoint, (int) bottomPoint);
-
-                                        if (Rect.intersects(rc1, rc2)) {
-                                            //if (Rect.intersects(headRect, pRect)) {
-                                            noWallsSnakeRelativeLayout.removeView(p);
+                                        ImageView foodPoint = foodPoints.get(i);
+                                        if (GameUtils.isColliding(head, foodPoint)) {
+                                            noWallsSnakeRelativeLayout.removeView(foodPoint);
                                             foodPoints.remove(i);
                                             playerScore++;
                                             isCollide = true;
                                             textScore.setText(getString(R.string.gamescreen_score) + playerScore);
+                                            speedX++;
+                                            speedY++;
                                             setNewPoint();
                                             addTail();
-                                            shake();
-                                            fadeAnimation();
+                                            GameUtils.shakeScreen(NoWallsSnake.this, noWallsSnakeRelativeLayout);
+                                            GameUtils.fadeAnimation(NoWallsSnake.this, noWallsSnakeRelativeLayout, playerScore);
                                         }
                                         checkBitten();
                                     }
@@ -407,9 +376,7 @@ public class NoWallsSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setX(currentPart.getX() + speedX);
-                                            //if (currentPart.getX() + currentPart.getWidth() >= screenWidth) {
-                                            if (currentPart.getX() + currentPart.getDrawable().getIntrinsicWidth() >= screenWidth) {
-                                                //currentPart.setX(screenWidth - currentPart.getWidth() / 2);
+                                            if (currentPart.getX() + currentPart.getWidth() >= screenWidth) {
                                                 currentPart.setX(0);
                                             }
                                         }
@@ -424,7 +391,7 @@ public class NoWallsSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setX(currentPart.getX() - speedX);
-                                            if (currentPart.getX() + currentPart.getDrawable().getIntrinsicWidth() <= 0) {
+                                            if (currentPart.getX() <= 0) {
                                                 currentPart.setX(screenWidth - currentPart.getWidth());
                                             }
                                         }
@@ -439,8 +406,8 @@ public class NoWallsSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() + speedY);
-                                            if (currentPart.getY() + currentPart.getDrawable().getIntrinsicHeight() >= screenHeight) {
-                                                currentPart.setY(0 - currentPart.getDrawable().getIntrinsicHeight());
+                                            if (currentPart.getY() + currentPart.getHeight() >= screenHeight) {
+                                                currentPart.setY(0);
                                             }
                                         }
                                     }
@@ -454,8 +421,8 @@ public class NoWallsSnake extends AppCompatActivity {
                                             currentPart.setY(previousPart.getY());
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() - speedY);
-                                            if (currentPart.getY() + currentPart.getDrawable().getIntrinsicHeight() <= 0) {
-                                                currentPart.setY(screenHeight - currentPart.getDrawable().getIntrinsicHeight());
+                                            if (currentPart.getY() <= 0) {
+                                                currentPart.setY(screenHeight - currentPart.getHeight());
                                             }
                                         }
                                     }
@@ -505,7 +472,6 @@ public class NoWallsSnake extends AppCompatActivity {
                     }
                     result = true;
                 }
-
             }
             return result;
         }
@@ -523,13 +489,13 @@ public class NoWallsSnake extends AppCompatActivity {
             display.getSize(size);
             screenWidth = size.x;
             screenHeight = size.y;
+            speedX = (int) GameUtils.dpToPixel(NoWallsSnake.this, GameSettings.initial_speed);
+            speedY = (int) GameUtils.dpToPixel(NoWallsSnake.this, GameSettings.initial_speed);
             myHandler = new Handler();
             mGestureDetector = new GestureDetector(null, new SwipeGestureDetector());
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
             head = new ImageView(this);
-            head.setLayoutParams(layoutParams);
-            head.setImageResource(R.drawable.head);
+            head.setImageResource(R.drawable.head_new);
+            head.requestLayout();
             head.setX((screenWidth / 2) - head.getWidth());
             head.setY((screenHeight / 2) - head.getHeight());
             noWallsSnakeRelativeLayout.addView(head);
@@ -538,17 +504,17 @@ public class NoWallsSnake extends AppCompatActivity {
             foodPoints = new ArrayList<ImageView>();
             parts.add(0, head);
 
-            layoutParams.setMargins(GameSettings.LAYOUT_PADDING,
-                    GameSettings.LAYOUT_PADDING,
-                    GameSettings.LAYOUT_PADDING,
-                    GameSettings.LAYOUT_PADDING);
 
             setFoodPoints();
             buttonsDirectionInit();
-            if (hasFocus) {
-                isPaused = false;
-                update();
+
+        }
+        if (isInitialized && hasFocus) {
+            isPaused = false;
+            if (playMusic) {
+                musicPlayer.start();
             }
+            update();
         }
         super.onWindowFocusChanged(hasFocus);
     }

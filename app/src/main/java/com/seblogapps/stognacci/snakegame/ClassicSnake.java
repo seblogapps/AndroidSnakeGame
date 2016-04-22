@@ -351,9 +351,9 @@ public class ClassicSnake extends AppCompatActivity {
                             public void run() {
                                 for (int i = 0; i < foodPoints.size(); i++) {
                                     if (!isCollide) {
-                                        ImageView p = foodPoints.get(i);
-                                        if (GameUtils.isColliding(head, p)) {
-                                            classicSnakeRelativeLayout.removeView(p);
+                                        ImageView foodPoint = foodPoints.get(i);
+                                        if (GameUtils.isColliding(head, foodPoint)) {
+                                            classicSnakeRelativeLayout.removeView(foodPoint);
                                             foodPoints.remove(i);
                                             playerScore++;
                                             isCollide = true;
