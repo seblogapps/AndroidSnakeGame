@@ -30,7 +30,7 @@ public final class GameSettings {
     public static final int SHAKE_DURATION = 500;
 
     public static final int GAME_THREAD = 80;
-
+    public static final int GAME_THREAD_NOWALLS = 60;
     public static final int GAME_THREAD_BOMB = 50;
 
     public static final int SWIPE_THRESHOLD = 100;

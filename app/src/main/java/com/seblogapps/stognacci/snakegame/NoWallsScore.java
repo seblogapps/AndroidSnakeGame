@@ -135,10 +135,10 @@ public class NoWallsScore extends AppCompatActivity {
                 playAgainImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intentClassic = new Intent(NoWallsScore.this, NoWallsScore.class);
-                        intentClassic.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        intentClassic.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intentClassic);
+                        Intent intentNoWalls = new Intent(NoWallsScore.this, NoWallsSnake.class);
+                        intentNoWalls.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        intentNoWalls.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intentNoWalls);
                     }
                 });
             }

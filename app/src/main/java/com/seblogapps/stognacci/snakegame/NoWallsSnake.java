@@ -342,7 +342,7 @@ public class NoWallsSnake extends AppCompatActivity {
             public void run() {
                 while (!gameOver && !isPaused) {
                     try {
-                        Thread.sleep(GameSettings.GAME_THREAD);
+                        Thread.sleep(GameSettings.GAME_THREAD_NOWALLS);
                         myHandler.post(new Runnable() {
                             @Override
                             public void run() {
