@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -78,7 +80,7 @@ public class ClassicSnake extends AppCompatActivity {
     private SoundPool mSoundPool;
     private int backgroundMusic;
     private int soundPopId;
-    private int soundCollideId;
+    private int soundCrashId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +96,7 @@ public class ClassicSnake extends AppCompatActivity {
         }
         preferences = getApplicationContext().getSharedPreferences(GameSettings.SHAREDPREFS_NAME, Context.MODE_PRIVATE);
 
-        musicOnOff();
+        initializeSoundResources();
 
         classicSnakeRelativeLayout = (RelativeLayout) findViewById(R.id.classic_snake_layout);
         classicSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
@@ -106,20 +108,31 @@ public class ClassicSnake extends AppCompatActivity {
         isInitialized = false;
     }
 
-    private void musicOnOff() {
+    private void initializeSoundResources() {
         playMusic = preferences.getBoolean(GameSettings.SHAREDPREFS_MUSIC, true);
-        musicPlayer = MediaPlayer.create(ClassicSnake.this, R.raw.classicMusicLoop);
-        mSoundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        musicPlayer = MediaPlayer.create(ClassicSnake.this, R.raw.classicmusic);
 
         if (playMusic) {
-            soundPopId = mSoundPool.load(ClassicSnake.this, R.raw.blop, 1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_GAME)
+                        .build();
+                mSoundPool = new SoundPool.Builder()
+                        .setMaxStreams(3)
+                        .setAudioAttributes(audioAttributes)
+                        .build();
+            } else {
+                mSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 1);
+            }
+            soundPopId = mSoundPool.load(this, R.raw.blop, 1);
+            soundCrashId = mSoundPool.load(this, R.raw.crash, 1);
+
             musicPlayer.setLooping(true);
             musicPlayer.setVolume(0.6f, 0.6f);
             musicPlayer.start();
         } else {
             musicPlayer.stop();
-            mSoundPool.release();
-            mSoundPool = null;
         }
     }
 
@@ -133,17 +146,18 @@ public class ClassicSnake extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        Log.d(LOG_TAG, "Entered onPause method");
         super.onPause();
         isPaused = true;
-        musicPlayer.release();
+        if (playMusic) {
+            musicPlayer.pause();
+        }
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(LOG_TAG, "Entered onDestroy method");
         super.onDestroy();
-        if (mSoundPool != null) {
+        if (playMusic) {
+            musicPlayer.release();
             mSoundPool.release();
             mSoundPool = null;
         }
@@ -299,6 +313,9 @@ public class ClassicSnake extends AppCompatActivity {
 
     private void collide() {
         gameOver = true;
+        if (playMusic) {
+            mSoundPool.play(soundCrashId, 1.0f, 1.0f, 1, 0, 1);
+        }
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(GameSettings.SHAREDPREFS_LASTSCORE, playerScore);
         editor.apply();
@@ -467,13 +484,11 @@ public class ClassicSnake extends AppCompatActivity {
     public class SwipeGestureDetector extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onDown(MotionEvent e) {
-            Log.d(LOG_TAG, "Entered onDown");
             return true;
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            Log.d(LOG_TAG, "Entered onFling");
             boolean result = false;
             if (useSwipeControls) {
                 float diffX = e2.getX() - e1.getX();
