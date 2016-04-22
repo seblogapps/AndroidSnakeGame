@@ -17,8 +17,6 @@ public final class GameSettings {
 
     public static float initial_speed = 5f;
 
-    public static final String MY_AD_UNIT_ID = "TBA";
-
     // Flash animation for the app
     public static final int ANIMATION_OPEN_BUTTON_DURATION = 400;
     public static final int ANIMATION_CLOSE_BUTTON_DURATION = 400;

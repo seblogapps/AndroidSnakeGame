@@ -55,16 +55,16 @@ public class Settings extends AppCompatActivity {
 
         adView = new AdView(this);
         adView.setAdSize(AdSize.SMART_BANNER);
-        //adView.setAdUnitId(GameSettings.MY_AD_UNIT_ID);
         adView.setAdUnitId(getString(R.string.banner_ad_unit_id));
+        //adView.setAdUnitId(getString(R.string.test_banner_ad_unit_id));
         RelativeLayout.LayoutParams adViewParams = new RelativeLayout.LayoutParams(
                 AdView.LayoutParams.WRAP_CONTENT,
                 AdView.LayoutParams.WRAP_CONTENT);
         adViewParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
         settingsLayout.addView(adView, adViewParams);
-        //AdRequest adRequest = new AdRequest.Builder().addTestDevice("100B9A3771CFE9E721A3AEB227193F7D").build();
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("100B9A3771CFE9E721A3AEB227193F7D")
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         adView.loadAd(adRequest);
 
         settingsLayout = (RelativeLayout) findViewById(R.id.settings_layout);

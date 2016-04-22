@@ -13,7 +13,12 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 public class ClassicScore extends AppCompatActivity {
 
@@ -34,6 +39,7 @@ public class ClassicScore extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_classic_score);
+        RelativeLayout classicScoreLayout = (RelativeLayout) findViewById(R.id.classic_score_layout);
 
         preferences = getApplicationContext().getSharedPreferences(GameSettings.SHAREDPREFS_NAME, Context.MODE_PRIVATE);
 
@@ -43,6 +49,20 @@ public class ClassicScore extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId(getString(R.string.banner_ad_unit_id));
+        //adView.setAdUnitId(getString(R.string.test_banner_ad_unit_id));
+        RelativeLayout.LayoutParams adViewParams = new RelativeLayout.LayoutParams(
+                AdView.LayoutParams.WRAP_CONTENT,
+                AdView.LayoutParams.WRAP_CONTENT);
+        adViewParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        classicScoreLayout.addView(adView, adViewParams);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("100B9A3771CFE9E721A3AEB227193F7D")
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        adView.loadAd(adRequest);
 
         initTitle();
         initScore();

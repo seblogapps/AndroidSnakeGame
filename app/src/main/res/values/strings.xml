@@ -12,7 +12,8 @@
     <string name="title_activity_bomb_snake">Bomb_Snake</string>
     <string name="title_activity_bomb_score">Bomb_Score</string>
 
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="test_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id">ca-app-pub-7349086147955397/3372310410</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
