@@ -78,7 +78,6 @@ public class ClassicSnake extends AppCompatActivity {
     private int speedY;
 
     private SoundPool mSoundPool;
-    private int backgroundMusic;
     private int soundPopId;
     private int soundCrashId;
 
