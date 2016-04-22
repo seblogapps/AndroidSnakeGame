@@ -496,6 +496,8 @@ public class ClassicSnake extends AppCompatActivity {
             display.getSize(size);
             screenWidth = size.x;
             screenHeight = size.y;
+            speedX = (int) GameUtils.dpToPixel(ClassicSnake.this, GameSettings.initial_speed);
+            speedY = (int) GameUtils.dpToPixel(ClassicSnake.this, GameSettings.initial_speed);
             myHandler = new Handler();
             mGestureDetector = new GestureDetector(null, new SwipeGestureDetector());
             head = new ImageView(this);
@@ -505,12 +507,11 @@ public class ClassicSnake extends AppCompatActivity {
             head.setY((screenHeight / 2) - head.getHeight());
             classicSnakeRelativeLayout.addView(head);
 
+
             parts = new ArrayList<ImageView>();
             foodPoints = new ArrayList<ImageView>();
             parts.add(0, head);
 
-            speedX = (int) GameUtils.dpToPixel(ClassicSnake.this, 5f);
-            speedY = (int) GameUtils.dpToPixel(ClassicSnake.this, 5f);
 
             setFoodPoints();
             buttonsDirectionInit();

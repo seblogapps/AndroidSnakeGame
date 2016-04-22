@@ -15,6 +15,8 @@ public final class GameSettings {
 
     public static final int NUMBER_BOMBS = 5;
 
+    public static float initial_speed = 5f;
+
     public static final String MY_AD_UNIT_ID = "TBA";
 
     // Flash animation for the app
@@ -29,7 +31,7 @@ public final class GameSettings {
 
     public static final int GAME_THREAD = 80;
 
-    public static final int GAME_THREAD_BOMB = 80;
+    public static final int GAME_THREAD_BOMB = 50;
 
     public static final int SWIPE_THRESHOLD = 100;
     public static final int SWIPE_VELOCITY_THRESHOLD = 100;

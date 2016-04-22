@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -13,16 +12,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -265,6 +260,7 @@ public class BombSnake extends AppCompatActivity {
                 onClickUp();
             }
         });
+
         useSwipeControls = preferences.getBoolean(GameSettings.SHAREDPREFS_CONTROLS, true);
         if (!useSwipeControls) {
             btnRight.setVisibility(View.VISIBLE);
@@ -276,37 +272,6 @@ public class BombSnake extends AppCompatActivity {
             btnLeft.setVisibility(View.INVISIBLE);
             btnDown.setVisibility(View.INVISIBLE);
             btnUp.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private void shake() {
-        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        shake.setDuration(GameSettings.SHAKE_DURATION);
-        bombSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
-        bombSnakeRelativeLayout.startAnimation(shake);
-    }
-
-    private void fadeAnimation() {
-        if (playerScore % GameSettings.POINTS_ANIMATION == 0) {
-            Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-            bombSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake_change);
-            bombSnakeRelativeLayout.startAnimation(fadeIn);
-            fadeIn.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    Animation fadeOut = AnimationUtils.loadAnimation(BombSnake.this, R.anim.fade_out);
-                    bombSnakeRelativeLayout.setBackgroundResource(R.drawable.background_for_snake);
-                    bombSnakeRelativeLayout.startAnimation(fadeOut);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-            });
         }
     }
 
@@ -326,6 +291,9 @@ public class BombSnake extends AppCompatActivity {
 
     private void gameOver() {
         gameOver = true;
+        if (playMusic) {
+            mSoundPool.play(soundCrashId, 1.0f, 1.0f, 1, 0, 1);
+        }
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(GameSettings.SHAREDPREFS_LASTSCORE, playerScore);
         editor.apply();
@@ -336,10 +304,7 @@ public class BombSnake extends AppCompatActivity {
 
     private void addTail() {
         ImageView tailImageView = new ImageView(BombSnake.this);
-        tailImageView.setImageResource(R.drawable.head);
-        LinearLayout.LayoutParams layoutParams = new
-                LinearLayout.LayoutParams((screenWidth * 20) / 450, (screenHeight * 30) / 450);
-        tailImageView.setLayoutParams(layoutParams);
+        tailImageView.setImageResource(R.drawable.head_new);
         bombSnakeRelativeLayout.addView(tailImageView);
         parts.add(tailImageView);
     }
@@ -349,12 +314,15 @@ public class BombSnake extends AppCompatActivity {
         ImageView newFoodPoint = new ImageView(BombSnake.this);
         float x = random.nextFloat() * (screenWidth - newFoodPoint.getWidth());
         float y = random.nextFloat() * (screenHeight - newFoodPoint.getHeight());
-        newFoodPoint.setImageResource(R.drawable.food);
+        newFoodPoint.setImageResource(R.drawable.food_new);
         newFoodPoint.setX(x);
         newFoodPoint.setY(y);
         isCollide = false;
         bombSnakeRelativeLayout.addView(newFoodPoint);
         foodPoints.add(foodPoints.size(), newFoodPoint);
+        if (playMusic) {
+            mSoundPool.play(soundPopId, 1, 1, 1, 0, 1);
+        }
     }
 
     private void setFoodPoints() {
@@ -363,7 +331,7 @@ public class BombSnake extends AppCompatActivity {
             ImageView foodItem = new ImageView(BombSnake.this);
             float x = random.nextFloat() * (screenWidth - foodItem.getWidth());
             float y = random.nextFloat() * (screenHeight - foodItem.getHeight());
-            foodItem.setImageResource(R.drawable.food);
+            foodItem.setImageResource(R.drawable.food_new);
             foodItem.setX(x);
             foodItem.setY(y);
             bombSnakeRelativeLayout.addView(foodItem);
@@ -377,12 +345,7 @@ public class BombSnake extends AppCompatActivity {
             ImageView bomb = new ImageView(this);
             float x = (random.nextFloat() * screenWidth - bomb.getWidth());
             float y = (random.nextFloat() * screenHeight - bomb.getHeight());
-            bomb.setImageResource(R.drawable.food_poison);
-
-            RelativeLayout.LayoutParams layoutParams = new
-                    RelativeLayout.LayoutParams((screenWidth * 20 / 450),
-                    (screenHeight * 30 / 450 ));
-            bomb.setLayoutParams(layoutParams);
+            bomb.setImageResource(R.drawable.poison_new);
             bomb.setX(x);
             bomb.setY(y);
             bombSnakeRelativeLayout.addView(bomb);
@@ -396,58 +359,32 @@ public class BombSnake extends AppCompatActivity {
             public void run() {
                 while (!gameOver && !isPaused) {
                     try {
-                        Thread.sleep(GameSettings.GAME_THREAD);
+                        Thread.sleep(GameSettings.GAME_THREAD_BOMB);
                         myHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Rect headRect = new Rect();
-                                float left = head.getX();// - head.getWidth();
-                                float top = head.getY();// - head.getHeight();
-                                float right = head.getX() + head.getWidth();
-                                float bottom = head.getY() + head.getHeight();
                                 for (int i = 0; i < foodPoints.size(); i++) {
                                     if (!isCollide) {
                                         ImageView p = foodPoints.get(i);
-                                        Rect pRect = new Rect();
-                                        //p.getLocalVisibleRect(pRect);
-                                        p.getHitRect(pRect);
-                                        float left1 = p.getX() - p.getWidth();
-                                        float top1 = p.getY() - p.getHeight();
-                                        float right1 = p.getX() + p.getWidth();
-                                        float bottom1 = p.getY() + p.getHeight();
-                                        // Player bounding rectangle
-                                        Rect rc1 = new Rect();
-                                        rc1.set((int) left, (int) top, (int) right, (int) bottom);
-                                        // Food bounding rectangle
-                                        Rect rc2 = new Rect();
-                                        rc2.set((int) left1, (int) top1, (int) right1, (int) bottom1);
-
-                                        //p.getHitRect(rc2);
-                                        //if (Rect.intersects(rc1, rc2)) {
-                                        if (Rect.intersects(headRect, pRect)) {
-                                            Log.d(LOG_TAG, "Collision between head and FoodPoint(" + i + ")");
-                                            Log.d(LOG_TAG, "At coordinates: " + headRect.toString() + " - " + pRect.toString());
+                                        if (GameUtils.isColliding(head, p)) {
                                             bombSnakeRelativeLayout.removeView(p);
                                             foodPoints.remove(i);
                                             playerScore++;
                                             isCollide = true;
-                                            textScore.setText("Score: " + playerScore);
+                                            textScore.setText(getString(R.string.gamescreen_score) + playerScore);
+                                            speedX++;
+                                            speedY++;
                                             setNewPoint();
                                             addTail();
-                                            shake();
-                                            fadeAnimation();
+                                            GameUtils.shakeScreen(BombSnake.this, bombSnakeRelativeLayout);
+                                            GameUtils.fadeAnimation(BombSnake.this, bombSnakeRelativeLayout, playerScore);
                                         }
                                         checkBitten();
                                     }
                                 }
                                 for (int i = 0; i< bombs.size(); i++) {
                                     ImageView bomb = bombs.get(i);
-                                    Rect bombRect = new Rect();
-                                    bomb.getGlobalVisibleRect(bombRect);
-                                    headRect = new Rect();
-                                    head.getGlobalVisibleRect(headRect);
-
-                                    if (Rect.intersects(headRect, bombRect)) {
+                                    if (GameUtils.isColliding(head, bomb)) {
                                         if (isCollide == false) {
                                             isCollide = true;
                                             gameOver();
@@ -467,7 +404,8 @@ public class BombSnake extends AppCompatActivity {
                                         } else { // Head
                                             currentPart.setX(currentPart.getX() + speedX);
                                             if (currentPart.getX() + currentPart.getWidth() >= screenWidth) {
-                                                currentPart.setX(0);
+                                                currentPart.setX(screenWidth - currentPart.getWidth());
+                                                gameOver();
                                             }
                                         }
                                     }
@@ -482,7 +420,8 @@ public class BombSnake extends AppCompatActivity {
                                         } else { // Head
                                             currentPart.setX(currentPart.getX() - speedX);
                                             if (currentPart.getX() <= 0) {
-                                                currentPart.setX(screenWidth - currentPart.getWidth());
+                                                currentPart.setX(0);
+                                                gameOver();
                                             }
                                         }
                                     }
@@ -497,7 +436,8 @@ public class BombSnake extends AppCompatActivity {
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() + speedY);
                                             if (currentPart.getY() + currentPart.getHeight() >= screenHeight) {
-                                                currentPart.setY(0);
+                                                currentPart.setY(screenHeight - currentPart.getHeight());
+                                                gameOver();
                                             }
                                         }
                                     }
@@ -512,7 +452,8 @@ public class BombSnake extends AppCompatActivity {
                                         } else { // Head
                                             currentPart.setY(currentPart.getY() - speedY);
                                             if (currentPart.getY() <= 0) {
-                                                currentPart.setY(screenHeight - currentPart.getHeight());
+                                                currentPart.setY(0);
+                                                gameOver();
                                             }
                                         }
                                     }
@@ -562,7 +503,6 @@ public class BombSnake extends AppCompatActivity {
                     }
                     result = true;
                 }
-
             }
             return result;
         }
@@ -580,13 +520,13 @@ public class BombSnake extends AppCompatActivity {
             display.getSize(size);
             screenWidth = size.x;
             screenHeight = size.y;
+            speedX = (int) GameUtils.dpToPixel(BombSnake.this, GameSettings.initial_speed);
+            speedY = (int) GameUtils.dpToPixel(BombSnake.this, GameSettings.initial_speed);
             myHandler = new Handler();
             mGestureDetector = new GestureDetector(null, new SwipeGestureDetector());
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    ((screenWidth * 20) / 450), ((screenHeight * 30) / 450));
             head = new ImageView(this);
-            head.setLayoutParams(layoutParams);
-            head.setImageResource(R.drawable.head);
+            head.setImageResource(R.drawable.head_new);
+            head.requestLayout();
             head.setX((screenWidth / 2) - head.getWidth());
             head.setY((screenHeight / 2) - head.getHeight());
             bombSnakeRelativeLayout.addView(head);
@@ -596,13 +536,18 @@ public class BombSnake extends AppCompatActivity {
             parts.add(0, head);
 
             setFoodPoints();
+
             bombs = new ArrayList<ImageView>();
             setBombs();
+
             buttonsDirectionInit();
-            if (hasFocus) {
-                isPaused = false;
-                update();
+        }
+        if (isInitialized && hasFocus) {
+            isPaused = false;
+            if (playMusic) {
+                musicPlayer.start();
             }
+            update();
         }
         super.onWindowFocusChanged(hasFocus);
     }
