@@ -66,7 +66,6 @@ public class BombSnake extends AppCompatActivity {
     private ArrayList<ImageView> foodPoints;
     private boolean isCollide = false;
 
-    private ImageView bomb;
     private ArrayList<ImageView> bombs;
 
     private Handler myHandler;
@@ -374,10 +373,10 @@ public class BombSnake extends AppCompatActivity {
                                         checkBitten();
                                     }
                                 }
-                                for (int i = 0; i< bombs.size(); i++) {
+                                for (int i = 0; i < bombs.size(); i++) {
                                     ImageView bomb = bombs.get(i);
                                     if (GameUtils.isColliding(head, bomb)) {
-                                        if (isCollide == false) {
+                                        if (!isCollide) {
                                             isCollide = true;
                                             gameOver();
                                         }
