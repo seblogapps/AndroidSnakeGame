@@ -10,6 +10,7 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -82,6 +83,7 @@ public class ClassicSnake extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "Entered onCreate method");
         setContentView(R.layout.content_classic_snake);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         View decorView = getWindow().getDecorView();
@@ -101,15 +103,12 @@ public class ClassicSnake extends AppCompatActivity {
 
         textScore = (TextView) findViewById(R.id.score);
 
-        speedX = (int) GameUtils.dpToPixel(ClassicSnake.this, 5f);
-        speedY = (int) GameUtils.dpToPixel(ClassicSnake.this, 5f);
-
         isInitialized = false;
     }
 
     private void musicOnOff() {
         playMusic = preferences.getBoolean(GameSettings.SHAREDPREFS_MUSIC, true);
-        musicPlayer = MediaPlayer.create(ClassicSnake.this, R.raw.music);
+        musicPlayer = MediaPlayer.create(ClassicSnake.this, R.raw.classicMusicLoop);
         mSoundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 
         if (playMusic) {
@@ -134,6 +133,7 @@ public class ClassicSnake extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        Log.d(LOG_TAG, "Entered onPause method");
         super.onPause();
         isPaused = true;
         musicPlayer.release();
@@ -141,6 +141,7 @@ public class ClassicSnake extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Log.d(LOG_TAG, "Entered onDestroy method");
         super.onDestroy();
         if (mSoundPool != null) {
             mSoundPool.release();
@@ -466,11 +467,13 @@ public class ClassicSnake extends AppCompatActivity {
     public class SwipeGestureDetector extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onDown(MotionEvent e) {
+            Log.d(LOG_TAG, "Entered onDown");
             return true;
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            Log.d(LOG_TAG, "Entered onFling");
             boolean result = false;
             if (useSwipeControls) {
                 float diffX = e2.getX() - e1.getX();
@@ -504,6 +507,7 @@ public class ClassicSnake extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+        Log.d(LOG_TAG, "Entered onWindowFocusChanged method " + "isInit: " + isInitialized + " hasFocus: " + hasFocus + " isPaused: " + isPaused + " speed" + speedX);
         if (!isInitialized) {
             isInitialized = true;
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -527,12 +531,16 @@ public class ClassicSnake extends AppCompatActivity {
             foodPoints = new ArrayList<ImageView>();
             parts.add(0, head);
 
+            speedX = (int) GameUtils.dpToPixel(ClassicSnake.this, 5f);
+            speedY = (int) GameUtils.dpToPixel(ClassicSnake.this, 5f);
+
             setFoodPoints();
             buttonsDirectionInit();
-            if (hasFocus) {
-                isPaused = false;
-                update();
-            }
+
+        }
+        if (isInitialized && hasFocus) {
+            isPaused = false;
+            update();
         }
         super.onWindowFocusChanged(hasFocus);
     }
