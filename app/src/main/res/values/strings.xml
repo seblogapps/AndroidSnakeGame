@@ -25,5 +25,6 @@
     <string name="title_settings_middle"> SETTINGS </string>
     <string name="title_settings_right">|</string>
     <string name="gamescreen_score">"Score: "</string>
+    <string name="game_score_0">Score: 0</string>
 
 </resources>
