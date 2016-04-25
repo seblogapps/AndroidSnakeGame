@@ -522,13 +522,13 @@ public class BombSnake extends AppCompatActivity {
             head.setY((screenHeight / 2) - head.getHeight());
             bombSnakeRelativeLayout.addView(head);
 
-            parts = new ArrayList<ImageView>();
-            foodPoints = new ArrayList<ImageView>();
+            parts = new ArrayList<>();
+            foodPoints = new ArrayList<>();
             parts.add(0, head);
 
             setFoodPoints(GameSettings.FOOD_POINTS);
 
-            bombs = new ArrayList<ImageView>();
+            bombs = new ArrayList<>();
             setBombs();
 
             buttonsDirectionInit();

@@ -500,8 +500,8 @@ public class ClassicSnake extends AppCompatActivity {
             classicSnakeRelativeLayout.addView(head);
 
 
-            parts = new ArrayList<ImageView>();
-            foodPoints = new ArrayList<ImageView>();
+            parts = new ArrayList<>();
+            foodPoints = new ArrayList<>();
             parts.add(0, head);
 
 

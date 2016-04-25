@@ -492,8 +492,8 @@ public class NoWallsSnake extends AppCompatActivity {
             head.setY((screenHeight / 2) - head.getHeight());
             noWallsSnakeRelativeLayout.addView(head);
 
-            parts = new ArrayList<ImageView>();
-            foodPoints = new ArrayList<ImageView>();
+            parts = new ArrayList<>();
+            foodPoints = new ArrayList<>();
             parts.add(0, head);
 
 
