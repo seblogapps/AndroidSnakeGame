@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Snake Game</string>
     <string name="action_settings">Settings</string>
-    <string name="title_snake_left">|</string>
+    <string name="title_snake_left" translatable="false">|</string>
     <string name="title_snake_middle"> SNAKE </string>
-    <string name="title_snake_right">|</string>
+    <string name="title_snake_right" translatable="false">|</string>
     <string name="title_activity_classic_snake">Classic_Snake</string>
     <string name="title_activity_no_walls_snake">No_Walls_Snake</string>
     <string name="title_activity_settings">Settings</string>
@@ -12,19 +12,19 @@
     <string name="title_activity_bomb_snake">Bomb_Snake</string>
     <string name="title_activity_bomb_score">Bomb_Score</string>
 
-    <string name="test_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="banner_ad_unit_id">ca-app-pub-7349086147955397/3372310410</string>
+    <string name="test_banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-7349086147955397/3372310410</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY CONTENT</string>
-    <string name="title_gameover_left">|</string>
+    <string name="title_gameover_left" translatable="false">|</string>
     <string name="title_gameover_middle"> GAME OVER </string>
-    <string name="title_gameover_right">|</string>
+    <string name="title_gameover_right" translatable="false">|</string>
 
-    <string name="title_settings_left">|</string>
+    <string name="title_settings_left" translatable="false">|</string>
     <string name="title_settings_middle"> SETTINGS </string>
-    <string name="title_settings_right">|</string>
+    <string name="title_settings_right" translatable="false">|</string>
 
     <string name="player_score_0">Score: 00</string>
     <string name="player_score">"Score: %1$02d"</string>
