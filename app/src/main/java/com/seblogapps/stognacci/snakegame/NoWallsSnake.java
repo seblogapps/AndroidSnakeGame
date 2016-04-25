@@ -346,7 +346,7 @@ public class NoWallsSnake extends AppCompatActivity {
                                             foodPoints.remove(i);
                                             playerScore++;
                                             isCollide = true;
-                                            textScore.setText(getString(R.string.gamescreen_score) + playerScore);
+                                            textScore.setText(getString(R.string.player_score, playerScore));
                                             speedX++;
                                             speedY++;
                                             setNewPoint(true);

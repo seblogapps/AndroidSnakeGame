@@ -20,7 +20,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="6dp"
         android:layout_marginRight="28dp"
-        android:text="@string/game_score_0"
+        android:text="@string/player_score_0"
         android:textSize="18sp"
         android:textStyle="bold"/>
 

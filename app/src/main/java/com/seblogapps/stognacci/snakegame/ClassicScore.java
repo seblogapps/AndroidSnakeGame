@@ -84,7 +84,7 @@ public class ClassicScore extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 int playerScore = preferences.getInt(GameSettings.SHAREDPREFS_LASTSCORE, 0);
-                scoreTextView.setText("Score: " + String.valueOf(playerScore));
+                scoreTextView.setText(getString(R.string.player_score, playerScore));
                 scoreTextView.setTextColor(Color.WHITE);
                 scoreTextView.setGravity(Gravity.CENTER);
                 scoreTextView.setBackgroundResource(R.drawable.menu_options);
@@ -132,7 +132,7 @@ public class ClassicScore extends AppCompatActivity {
             editor.putInt(GameSettings.SHAREDPREFS_HIGHSCORE_CLASSIC, lastScore);
             editor.apply();
         }
-        highScoreTextView.setText("High: " + String.valueOf(highScore));
+        highScoreTextView.setText(getString(R.string.player_highscore, highScore));
         highScoreTextView.setTextColor(Color.WHITE);
         highScoreTextView.setGravity(Gravity.CENTER);
         highScoreTextView.setBackgroundResource(R.drawable.menu_options);
