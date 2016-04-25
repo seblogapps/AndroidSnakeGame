@@ -26,8 +26,8 @@
     <string name="title_settings_middle"> SETTINGS </string>
     <string name="title_settings_right">|</string>
 
-    <string name="player_score_0">Score: 0</string>
-    <string name="player_score">"Score: %1$d"</string>
-    <string name="player_highscore">"High: %1$d"</string>
+    <string name="player_score_0">Score: 00</string>
+    <string name="player_score">"Score: %1$02d"</string>
+    <string name="player_highscore">"High: %1$02d"</string>
 
 </resources>
