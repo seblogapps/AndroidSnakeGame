@@ -130,7 +130,7 @@ public class BombScore extends AppCompatActivity {
             editor.putInt(GameSettings.SHAREDPREFS_HIGHSCORE_BOMB, lastScore);
             editor.apply();
         }
-        highScoreTextView.setText(getString(R.string.player_highscore, highScore));
+        highScoreTextView.setText(getString(R.string.player_highScore, highScore));
         highScoreTextView.setTextColor(Color.WHITE);
         highScoreTextView.setGravity(Gravity.CENTER);
         highScoreTextView.setBackgroundResource(R.drawable.menu_options);
