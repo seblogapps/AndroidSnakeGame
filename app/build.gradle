@@ -21,8 +21,8 @@ if (project.hasProperty("MyProject.properties")
             applicationId "com.seblogapps.stognacci.snakegame"
             minSdkVersion 16
             targetSdkVersion 27
-            versionCode 5
-            versionName "1.01b"
+            versionCode 6
+            versionName "1.01c"
         }
         buildTypes {
             release {
