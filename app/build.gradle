@@ -21,6 +21,7 @@ if (project.hasProperty("MyProject.properties")
             minSdkVersion 16
             targetSdkVersion 27
             versionCode 8
+            
             versionName "1.01e"
         }
         buildTypes {
