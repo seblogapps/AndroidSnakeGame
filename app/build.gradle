@@ -16,13 +16,12 @@ if (project.hasProperty("MyProject.properties")
             }
         }
         compileSdkVersion 27
-//        buildToolsVersion "23.0.3"
         defaultConfig {
             applicationId "com.seblogapps.stognacci.snakegame"
             minSdkVersion 16
             targetSdkVersion 27
-            versionCode 7
-            versionName "1.01d"
+            versionCode 8
+            versionName "1.01e"
         }
         buildTypes {
             release {
@@ -40,7 +39,6 @@ if (project.hasProperty("MyProject.properties")
         implementation 'com.android.support:appcompat-v7:27.1.1'
         implementation 'com.android.support:design:27.1.1'
         implementation 'com.android.support:support-v4:27.1.1'
-        //implementation 'com.google.android.gms:play-services:8.4.0'
         implementation 'com.google.firebase:firebase-ads:15.0.1'
         implementation 'com.google.firebase:firebase-core:15.0.2'
         implementation 'com.google.firebase:firebase-perf:15.2.0'
